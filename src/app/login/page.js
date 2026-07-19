@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -10,6 +10,7 @@ import { toast } from 'react-hot-toast';
 
 export default function LoginPage() {
   const { t, language } = useLanguage();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { checkAuth } = useAuth();
   const [formData, setFormData] = useState({ email: '', password: '' });
