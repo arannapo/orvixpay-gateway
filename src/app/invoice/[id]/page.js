@@ -131,6 +131,10 @@ export default function InvoicePage({ params }) {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden p-4 font-sans">
+      {/* Absolute Language Switcher */}
+      <div className="absolute top-6 right-6 z-30">
+        <LanguageSwitcher />
+      </div>
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }
@@ -380,7 +384,6 @@ export default function InvoicePage({ params }) {
         {/* Dynamic bottom i18n switcher */}
         <div className="mt-4 flex justify-between items-center px-4 text-xs font-semibold text-slate-400">
           <span>&copy; {new Date().getFullYear()} OrvixPay</span>
-          <LanguageSwitcher />
         </div>
       </div>
     </div>
