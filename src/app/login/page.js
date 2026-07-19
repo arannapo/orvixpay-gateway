@@ -92,6 +92,13 @@ export default function LoginPage() {
         }
         await checkAuth();
       } else {
+        if (data.error === 'email_not_verified') {
+          toast.success(language === 'es' ? 'Cuenta no verificada. Redirigiendo a verificación OTP...' : 'Account not verified. Redirecting to OTP verification...');
+          setTimeout(() => {
+            router.push(`/register?email=${encodeURIComponent(formData.email)}&step=otp`);
+          }, 1500);
+          return;
+        }
         toast.error(data.error || (language === 'es' ? 'Error al iniciar sesión' : 'Login failed'));
       }
     } catch {

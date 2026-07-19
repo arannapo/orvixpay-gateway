@@ -58,8 +58,43 @@ export async function POST(req) {
     await User.updateMany({ isEmailVerified: { $exists: false } }, { $set: { isEmailVerified: true } });
 
     const user = await User.findOne({ email });
-    if (!user || user.isEmailVerified === false) {
+    if (!user) {
       return NextResponse.json({ success: false, error: 'Invalid credentials' }, { status: 401 });
+    }
+
+    if (user.isEmailVerified === false) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return NextResponse.json({ success: false, error: 'Invalid credentials' }, { status: 401 });
+      }
+
+      // Generate 6-digit OTP code for registration verification
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+      user.emailOtp = otp;
+      user.emailOtpExpires = expiresAt;
+      await user.save();
+
+      console.log(`\n===============================================\n[REGISTER OTP TRIGGER] Generated OTP for user ${email}: ${otp}\n===============================================\n`);
+
+      const appName = process.env.NEXT_PUBLIC_APP_NAME || 'OrvixPay';
+      await sendEmail({
+        to: user.email,
+        subject: `${appName} — Confirm Your Registration`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px;">
+            <h2 style="color: #4f46e5; margin-bottom: 20px;">Email Verification</h2>
+            <p>Please use the following 6-digit verification code to complete your registration:</p>
+            <div style="background-color: #f8fafc; padding: 15px; text-align: center; border-radius: 8px; font-size: 24px; font-weight: bold; letter-spacing: 4px; margin: 20px 0; border: 1px solid #e2e8f0; color: #1e293b;">
+              ${otp}
+            </div>
+            <p style="color: #64748b; font-size: 12px;">This code is valid for 10 minutes.</p>
+          </div>
+        `
+      });
+
+      return NextResponse.json({ success: false, error: 'email_not_verified', email: user.email }, { status: 400 });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);

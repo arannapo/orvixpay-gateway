@@ -27,6 +27,22 @@ export default function RegisterPage() {
     return () => clearTimeout(timer);
   }, [resendCooldown]);
 
+  // Handle unverified redirection from login page
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const emailParam = params.get('email');
+      const stepParam = params.get('step');
+      if (emailParam) {
+        setFormData(prev => ({ ...prev, email: emailParam }));
+      }
+      if (stepParam === 'otp') {
+        setStep('otp');
+        setResendCooldown(60);
+      }
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
