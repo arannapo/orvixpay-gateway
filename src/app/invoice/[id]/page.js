@@ -3,8 +3,11 @@
 import { useEffect, useState, use } from "react";
 import { Copy, RefreshCw, Clock } from "lucide-react";
 import toast from 'react-hot-toast';
+import { useLanguage } from "@/context/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function InvoicePage({ params }) {
+  const { t, language } = useLanguage();
   const unwrappedParams = use(params);
   const { id } = unwrappedParams;
   const [invoice, setInvoice] = useState(null);
@@ -219,7 +222,7 @@ export default function InvoicePage({ params }) {
               <div className="flex justify-between items-center gap-4 bg-slate-50/50 border border-slate-100 p-4 rounded-[1.5rem] mt-3">
                 <div>
                   <p className="text-slate-400 text-[10.5px] font-bold uppercase tracking-wider mb-1 font-sans">
-                    {invoice.status === 'Partially Paid' ? 'Remaining Balance' : 'Amount Due'}
+                    {invoice.status === 'Partially Paid' ? t('checkoutRemainingBalance') : (language === 'es' ? 'Monto Vencido' : 'Amount Due')}
                   </p>
                   <div className="flex flex-wrap items-center gap-2">
                     <img 
@@ -237,7 +240,9 @@ export default function InvoicePage({ params }) {
                   </div>
                   {invoice.status === 'Partially Paid' && (
                     <p className="text-[10px] text-slate-500 font-bold mt-1.5">
-                      Received {invoice.receivedAmount} of {invoice.usdtAmount} {invoice.coin}
+                      {language === 'es'
+                        ? `Recibido ${invoice.receivedAmount} de ${invoice.usdtAmount} ${invoice.coin}`
+                        : `Received ${invoice.receivedAmount} of ${invoice.usdtAmount} ${invoice.coin}`}
                     </p>
                   )}
                 </div>
@@ -248,26 +253,35 @@ export default function InvoicePage({ params }) {
 
               {/* Wallet Address (Always Visible) */}
               <div className="px-0.5">
-                <p className="text-slate-400 text-[10.5px] font-bold uppercase tracking-wider mb-1.5">Payment Address ({invoice.network || invoice.coin})</p>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 bg-slate-50/50 border border-slate-200/70 shadow-inner rounded-xl px-4 py-3 text-[13px] font-mono text-slate-700 break-all leading-normal">
-                    {invoice.walletAddress}
-                  </div>
-                  <button onClick={() => copyToClipboard(invoice.walletAddress)} className="p-3 bg-slate-900 text-white rounded-xl hover:bg-slate-850 hover:shadow transition-all duration-200 shrink-0">
-                    <Copy size={14} />
+                <div className="flex justify-between items-center mb-1.5">
+                  <span className="text-[10.5px] text-slate-400 font-bold uppercase tracking-wider">{t('mockPaymentAddress')}</span>
+                  <button 
+                    onClick={() => copyToClipboard(invoice.walletAddress)}
+                    className="text-[10px] text-purple-650 font-bold hover:text-purple-800 flex items-center gap-1 transition-colors"
+                  >
+                    <Copy size={11} />
+                    <span>{language === 'es' ? 'Copiar Dirección' : 'Copy Address'}</span>
                   </button>
+                </div>
+                <div 
+                  onClick={() => copyToClipboard(invoice.walletAddress)}
+                  className="bg-slate-50 hover:bg-slate-100/70 border border-slate-200/60 p-3.5 rounded-xl font-mono text-[11px] break-all text-slate-650 cursor-pointer transition select-all relative group"
+                >
+                  {invoice.walletAddress}
                 </div>
               </div>
 
-              {/* Network Warning Note */}
-              <div className="bg-amber-50/40 border border-amber-200/60 rounded-2xl p-4 flex items-start gap-3 shadow-sm">
-                <div className="mt-0.5 text-amber-500 shrink-0">
-                  <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {/* Network Warning Badge */}
+              <div className="flex items-start gap-2.5 bg-amber-50/50 border border-amber-200/50 rounded-2xl p-4">
+                <div className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 shrink-0 mt-0.5">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                 </div>
                 <p className="text-[11px] text-amber-800 font-semibold leading-normal">
-                  Please send <strong className="font-extrabold">{invoice.coin}</strong> exclusively via the <strong className="font-extrabold">{invoice.network || 'BNB Smart Chain (BEP-20)'}</strong> network. Using any other network will result in permanent loss of funds.
+                  {language === 'es' 
+                    ? `Por favor envíe ${invoice.coin} exclusivamente a través de la red ${invoice.network || 'BNB Smart Chain (BEP-20)'}. El uso de cualquier otra red resultará en la pérdida permanente de fondos.`
+                    : `Please send ${invoice.coin} exclusively via the ${invoice.network || 'BNB Smart Chain (BEP-20)'} network. Using any other network will result in permanent loss of funds.`}
                 </p>
               </div>
 
@@ -276,7 +290,7 @@ export default function InvoicePage({ params }) {
                 onClick={() => setShowDetails(!showDetails)}
                 className="w-full flex items-center justify-between px-1 py-1 text-[11px] font-bold text-slate-400 hover:text-slate-750 uppercase tracking-widest transition-colors"
               >
-                <span>{showDetails ? 'Hide Invoice Details' : 'View Invoice Details'}</span>
+                <span>{showDetails ? (language === 'es' ? 'Ocultar Detalles' : 'Hide Invoice Details') : (language === 'es' ? 'Ver Detalles' : 'View Invoice Details')}</span>
                 <svg className={`w-4 h-4 transition-transform duration-300 ${showDetails ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
@@ -302,11 +316,11 @@ export default function InvoicePage({ params }) {
                   {/* Row 2: Customer Name & Email */}
                   <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-3">
                     <div>
-                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">Billed To</p>
+                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">{language === 'es' ? 'Facturado A' : 'Billed To'}</p>
                       <p className="text-slate-800 font-semibold text-xs truncate">{invoice.customerName || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">Email</p>
+                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">{language === 'es' ? 'Correo' : 'Email'}</p>
                       <p className="text-slate-800 font-semibold text-xs truncate">{invoice.customerEmail || 'N/A'}</p>
                     </div>
                   </div>
@@ -314,7 +328,7 @@ export default function InvoicePage({ params }) {
                   {/* Description Box */}
                   {invoice.description && (
                     <div className="border-t border-slate-100 pt-3">
-                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">Description</p>
+                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-1">{language === 'es' ? 'Descripción' : 'Description'}</p>
                       <p className="text-slate-700 text-xs leading-relaxed font-medium">
                         {invoice.description}
                       </p>
@@ -330,15 +344,17 @@ export default function InvoicePage({ params }) {
             {invoice.status === 'Pending' ? (
               <div className="flex flex-col items-center gap-1.5">
                 <RefreshCw size={18} className="animate-spin text-purple-600 mb-1" />
-                <p className="text-slate-800 text-[13.5px] font-bold">Waiting for your payment...</p>
-                <p className="text-slate-400 text-xs font-semibold">Please send the exact amount to the address above.</p>
+                <p className="text-slate-800 text-[13.5px] font-bold">{language === 'es' ? 'Esperando por su pago...' : 'Waiting for your payment...'}</p>
+                <p className="text-slate-400 text-xs font-semibold">{language === 'es' ? 'Por favor envíe la cantidad exacta a la dirección de arriba.' : 'Please send the exact amount to the address above.'}</p>
               </div>
             ) : invoice.status === 'Partially Paid' ? (
               <div className="flex flex-col items-center gap-1.5">
                 <RefreshCw size={18} className="animate-spin text-amber-500 mb-1" />
-                <p className="text-amber-700 text-[13.5px] font-bold">Partially Paid</p>
+                <p className="text-amber-700 text-[13.5px] font-bold">{t('dashStatusPartial')}</p>
                 <p className="text-slate-400 text-xs font-semibold">
-                  Please send the remaining {(invoice.usdtAmount - (invoice.receivedAmount || 0)).toFixed(2)} {invoice.coin} to the same address.
+                  {language === 'es'
+                    ? `Por favor envíe el restante ${(invoice.usdtAmount - (invoice.receivedAmount || 0)).toFixed(2)} ${invoice.coin} a la misma dirección.`
+                    : `Please send the remaining ${(invoice.usdtAmount - (invoice.receivedAmount || 0)).toFixed(2)} ${invoice.coin} to the same address.`}
                 </p>
               </div>
             ) : invoice.status === 'Paid' ? (
@@ -346,19 +362,25 @@ export default function InvoicePage({ params }) {
                 <div className="w-11 h-11 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-1 text-emerald-600 shadow-sm">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                 </div>
-                <p className="text-emerald-700 text-sm font-bold">Payment Successful</p>
-                <p className="text-slate-400 text-xs font-medium">Funds have been credited. You may close this tab.</p>
+                <p className="text-emerald-700 text-sm font-bold">{t('checkoutPaySuccess')}</p>
+                <p className="text-slate-400 text-xs font-medium">{language === 'es' ? 'Los fondos han sido acreditados. Puede cerrar esta pestaña.' : 'Funds have been credited. You may close this tab.'}</p>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-1.5">
                 <div className="w-11 h-11 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center mb-1 text-rose-600 shadow-sm">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
                 </div>
-                <p className="text-rose-700 text-sm font-bold">Invoice Expired</p>
-                <p className="text-slate-400 text-xs font-medium">This checkout request is no longer valid.</p>
+                <p className="text-rose-700 text-sm font-bold">{language === 'es' ? 'Factura Expirada' : 'Invoice Expired'}</p>
+                <p className="text-slate-400 text-xs font-medium">{language === 'es' ? 'Esta solicitud de pago ya no es válida.' : 'This checkout request is no longer valid.'}</p>
               </div>
             )}
           </div>
+        </div>
+
+        {/* Dynamic bottom i18n switcher */}
+        <div className="mt-4 flex justify-between items-center px-4 text-xs font-semibold text-slate-400">
+          <span>&copy; {new Date().getFullYear()} OrvixPay</span>
+          <LanguageSwitcher />
         </div>
       </div>
     </div>

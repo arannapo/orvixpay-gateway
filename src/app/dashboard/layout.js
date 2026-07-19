@@ -5,8 +5,11 @@ import { usePathname, useRouter } from 'next/navigation';
 import { LogOut, LayoutDashboard, Receipt, Key, Settings, Menu, X, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import { useLanguage } from '@/context/LanguageContext';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function DashboardLayout({ children }) {
+  const { t, language } = useLanguage();
   const router = useRouter();
   const pathname = usePathname();
   const { setUser } = useAuth();
@@ -73,9 +76,9 @@ export default function DashboardLayout({ children }) {
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-[270px] bg-white flex flex-col py-6 border-r border-slate-200/60 transform transition-transform duration-300 ease-out md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between px-6 mb-12">
-          <div className="flex items-center gap-2 pl-2">
+          <Link href="/" className="flex items-center gap-2 pl-2 hover:opacity-80 transition-opacity">
             <img src="/logo.PNG" alt="ORVIXPAY" className="h-10 object-contain" />
-          </div>
+          </Link>
           <button className="md:hidden text-slate-400 hover:text-slate-700 bg-white p-1 rounded-full shadow-sm border border-slate-200" onClick={() => setIsMobileMenuOpen(false)}>
             <X size={20} />
           </button>
@@ -84,6 +87,7 @@ export default function DashboardLayout({ children }) {
           {navItems.map((item) => {
             const isActive = item.path === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(item.path);
             const Icon = item.icon;
+            const localizedName = item.name === 'Dashboard' ? t('navDashboard') : item.name === 'Invoices' ? t('dashInvoices') : item.name === 'API Docs' ? t('footerDocs') : item.name === 'Settings' ? t('dashSettings') : item.name;
             return (
               <Link 
                 key={item.name} 
@@ -92,7 +96,7 @@ export default function DashboardLayout({ children }) {
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${isActive ? 'bg-slate-900 text-white shadow-md font-semibold' : 'text-slate-600 hover:bg-slate-200/50 hover:text-slate-900 font-medium'}`}
               >
                 <Icon size={18} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-white' : 'text-slate-400'} />
-                {item.name}
+                {localizedName}
               </Link>
             );
           })}
@@ -102,7 +106,7 @@ export default function DashboardLayout({ children }) {
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-rose-600 hover:bg-rose-50/50 rounded-xl font-semibold transition-colors"
           >
-            <LogOut size={18} className="text-slate-400" /> Logout
+            <LogOut size={18} className="text-slate-400" /> {t('dashLogout')}
           </button>
         </div>
       </aside>
@@ -114,11 +118,16 @@ export default function DashboardLayout({ children }) {
               <Menu size={24} />
             </button>
             <h1 className="text-xl md:text-2xl font-semibold tracking-tight text-slate-900">
-               {navItems.find(i => (i.path === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(i.path)))?.name || 'Dashboard'}
+               {(() => {
+                 const activeItem = navItems.find(i => (i.path === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(i.path)));
+                 if (!activeItem) return t('navDashboard');
+                 return activeItem.name === 'Dashboard' ? t('navDashboard') : activeItem.name === 'Invoices' ? t('dashInvoices') : activeItem.name === 'API Docs' ? t('footerDocs') : activeItem.name === 'Settings' ? t('dashSettings') : activeItem.name;
+               })()}
             </h1>
           </div>
           <div className="flex items-center gap-3 sm:gap-4 relative">
-            <span className="hidden sm:block text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">Merchant Workspace</span>
+            <LanguageSwitcher />
+            <span className="hidden sm:block text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">{t("footerConsole")}</span>
             <div 
               className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold shadow-md cursor-pointer hover:bg-slate-800 transition overflow-hidden shrink-0"
               onClick={() => setIsProfileOpen(!isProfileOpen)}

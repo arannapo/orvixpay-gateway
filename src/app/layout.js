@@ -13,15 +13,18 @@ export const metadata = {
 
 import ToastProvider from '@/components/ToastProvider';
 import { AuthProvider } from '@/context/AuthContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <ToastProvider />
-          {children}
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <ToastProvider />
+            {children}
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
