@@ -128,11 +128,16 @@ export default function DashboardLayout({ children }) {
           <div className="flex items-center gap-3 sm:gap-4 relative">
             <LanguageSwitcher />
             <span className="hidden sm:block text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-full">{t("footerConsole")}</span>
-            <div 
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold shadow-md cursor-pointer hover:bg-slate-800 transition overflow-hidden shrink-0"
-              onClick={() => setIsProfileOpen(!isProfileOpen)}
-            >
-              <img src={logoUrl || '/logo.PNG'} alt="Logo" className="w-full h-full object-cover" />
+            <div className="relative group">
+              <div 
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold shadow-md cursor-pointer hover:bg-slate-800 transition overflow-hidden shrink-0"
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+              >
+                <img src={logoUrl || '/logo.PNG'} alt="Logo" className="w-full h-full object-cover" />
+              </div>
+              <div className="absolute right-0 top-full mt-2 hidden group-hover:block bg-purple-600 text-white text-[11px] rounded-lg px-2.5 py-1.5 shadow-xl whitespace-nowrap z-50 pointer-events-none font-medium">
+                {language === 'es' ? 'Menú de Perfil' : 'Profile Menu'}
+              </div>
             </div>
 
             {/* Profile Dropdown */}
@@ -150,7 +155,7 @@ export default function DashboardLayout({ children }) {
                   <Link 
                     href="/dashboard/settings" 
                     onClick={() => setIsProfileOpen(false)} 
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 font-medium transition"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-purple-50 hover:text-purple-700 rounded-xl font-medium transition mx-2"
                   >
                     <Settings size={16} /> Settings
                   </Link>

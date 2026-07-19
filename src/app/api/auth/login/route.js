@@ -62,6 +62,10 @@ export async function POST(req) {
       return NextResponse.json({ success: false, error: 'Invalid credentials' }, { status: 401 });
     }
 
+    if (user.isBlocked) {
+      return NextResponse.json({ success: false, error: 'Your account has been suspended. Please contact support.' }, { status: 403 });
+    }
+
     if (user.isEmailVerified === false) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {

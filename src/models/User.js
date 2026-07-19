@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
   isEmailVerified: { type: Boolean, default: false },
+  isBlocked: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

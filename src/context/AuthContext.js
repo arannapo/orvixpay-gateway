@@ -37,11 +37,21 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     if (!loading) {
-      if (pathname?.startsWith('/dashboard') && !user) {
+      const isDashboardPath = pathname?.startsWith('/dashboard');
+      const isAdminPath = pathname?.startsWith('/admin');
+
+      if ((isDashboardPath || isAdminPath) && !user) {
         router.push('/login');
-      }
-      if ((pathname === '/login' || pathname === '/register') && user) {
+      } else if ((pathname === '/login' || pathname === '/register') && user) {
+        if (user.role === 'admin') {
+          router.push('/admin');
+        } else {
+          router.push('/dashboard');
+        }
+      } else if (isAdminPath && user && user.role !== 'admin') {
         router.push('/dashboard');
+      } else if (isDashboardPath && user && user.role === 'admin') {
+        router.push('/admin');
       }
     }
   }, [user, loading, pathname, router]);

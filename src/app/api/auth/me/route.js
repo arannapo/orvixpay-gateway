@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import dbConnect from '@/lib/mongodb';
+import User from '@/models/User';
 import jwt from 'jsonwebtoken';
 
 export async function GET(req) {
@@ -11,7 +13,21 @@ export async function GET(req) {
   try {
     const secret = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
     const decoded = jwt.verify(token, secret);
-    return NextResponse.json({ authenticated: true, user: { userId: decoded.userId, role: decoded.role } });
+    
+    await dbConnect();
+    const user = await User.findById(decoded.userId).select('email role');
+    if (!user) {
+      return NextResponse.json({ authenticated: false }, { status: 401 });
+    }
+    
+    return NextResponse.json({ 
+      authenticated: true, 
+      user: { 
+        userId: user._id, 
+        role: user.role, 
+        email: user.email 
+      } 
+    });
   } catch (error) {
     return NextResponse.json({ authenticated: false }, { status: 401 });
   }

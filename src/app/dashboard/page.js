@@ -207,10 +207,10 @@ export default function DashboardPage() {
         const ringColor = pct < 40 ? '#f43f5e' : pct < 75 ? '#f59e0b' : '#10b981';
 
         return (
-          <div className={`grid grid-cols-1 gap-6 ${stats.systemWalletAddress && !allDone ? 'xl:grid-cols-2' : 'xl:grid-cols-1'}`}>
+          <div className={`grid grid-cols-1 gap-6 ${stats.systemWalletAddress ? 'xl:grid-cols-2' : 'xl:grid-cols-1'}`}>
 
             {/* ── Card 1: Account Setup ── */}
-            {!allDone && profile && (() => {
+            {profile && (() => {
               const checkInfos = [
                 { key: 'logo',     label: language === 'es' ? 'Logotipo de empresa' : 'Business logo',           done: !!profile.logo,              href: '/dashboard/settings', tooltip: language === 'es' ? 'Sube el logotipo de tu empresa para mostrarlo en las facturas. Configura esto en la pestaña Cuenta.' : 'Upload your company logo to display on invoices. Set this in Settings under the Account tab.' },
                 { key: 'wallet',   label: language === 'es' ? 'Billetera de liquidación' : 'Receiving wallet',        done: !!profile.merchantWallet,    href: '/dashboard/settings', tooltip: language === 'es' ? 'Especifica tu dirección personal de recepción BEP20/BSC. Configura esto en la pestaña Cuenta.' : 'Specify your personal BEP20/BSC receiving address. Set this in Settings under the Account tab.' },
