@@ -8,6 +8,79 @@ import { useLanguage } from '@/context/LanguageContext';
 
 export default function SettingsPage() {
   const { t, language } = useLanguage();
+  
+  const s = {
+    emailAddress: language === 'es' ? 'Dirección de Correo' : 'Email Address',
+    emailDesc: language === 'es' ? 'Actualice la dirección de correo electrónico asociada con su espacio de trabajo.' : 'Update the email address associated with your merchant workspace.',
+    workspaceEmail: language === 'es' ? 'Correo Electrónico de Trabajo' : 'Workspace Email Address',
+    updateEmailBtn: language === 'es' ? 'Actualizar Correo' : 'Update Email',
+    updating: language === 'es' ? 'Actualizando...' : 'Updating...',
+    changePassword: language === 'es' ? 'Cambiar Contraseña' : 'Change Password',
+    changePasswordDesc: language === 'es' ? 'Actualice la contraseña de su cuenta regularmente para mantener la seguridad.' : 'Update your account password regularly to keep your workspace secure.',
+    newPassword: language === 'es' ? 'Nueva Contraseña' : 'New Password',
+    passRequirements: language === 'es' ? 'Requisitos de Fuerza de Contraseña:' : 'Password Strength Requirements:',
+    minChars: language === 'es' ? '8+ caracteres' : '8+ characters',
+    oneUpper: language === 'es' ? '1 letra mayúscula' : '1 uppercase letter',
+    oneNum: language === 'es' ? '1 número' : '1 number',
+    oneSpecial: language === 'es' ? '1 carácter especial' : '1 special character',
+    twoFactor: language === 'es' ? 'Autenticación de Dos Factores' : 'Two-Factor Authentication',
+    twoFactorDesc: language === 'es' ? 'Proteja su cuenta con una capa adicional de seguridad usando Google Authenticator.' : 'Protect your workspace with an extra layer of security using Google Authenticator.',
+    active: language === 'es' ? 'Activo' : 'Active',
+    disabled: language === 'es' ? 'Desactivado' : 'Disabled',
+    authenticatorApp: language === 'es' ? 'Aplicación Autenticadora (TOTP)' : 'Authenticator App (TOTP)',
+    authenticatorDesc: language === 'es' ? 'Use una aplicación de autenticación para generar códigos de verificación (OTP).' : 'Use an authenticator application to generate verification codes (OTP).',
+    disable2FA: language === 'es' ? 'Desactivar 2FA' : 'Disable 2FA',
+    enable2FA: language === 'es' ? 'Activar 2FA' : 'Enable 2FA',
+    loading: language === 'es' ? 'Cargando...' : 'Loading...',
+    loadingKeys: language === 'es' ? 'Cargando claves...' : 'Loading keys...',
+    noKeysFound: language === 'es' ? 'No se encontraron claves API' : 'No API Keys Found',
+    noKeysDesc: language === 'es' ? 'Genere su primera clave API para comenzar a crear facturas programáticamente.' : 'Generate your first API key to start creating crypto invoices programmatically.',
+    createdOn: language === 'es' ? 'Creado el' : 'Created on',
+    secretKey: language === 'es' ? 'Clave Secreta' : 'Secret Key',
+    maskedSecurity: language === 'es' ? 'Oculta por seguridad' : 'Masked for security',
+    deleteKeyTitle: language === 'es' ? 'Eliminar Clave API' : 'Delete API Key',
+    deleteKeyConfirm: language === 'es' ? '¿Está seguro de que desea eliminar esta clave API? Esta acción es permanente e invalidará las integraciones conectadas.' : 'Are you sure you want to delete this API key? This action is permanent and will instantly break any connected integrations.',
+    cancel: language === 'es' ? 'Cancelar' : 'Cancel',
+    delete: language === 'es' ? 'Eliminar' : 'Delete',
+    createKeyTitle: language === 'es' ? 'Crear Clave API' : 'Create API Key',
+    createKeyDesc: language === 'es' ? 'Ingrese un nombre para identificar esta clave.' : 'Enter a name to identify this key.',
+    productionPlaceholder: language === 'es' ? 'ej. Servidor de Producción' : 'e.g. Production Server',
+    generate: language === 'es' ? 'Generar' : 'Generate',
+    creating: language === 'es' ? 'Creando...' : 'Creating...',
+    copySecretKeyTitle: language === 'es' ? 'Copie su Clave Secreta' : 'Copy your Secret Key',
+    copySecretKeyDesc: language === 'es' ? 'Por seguridad, esta clave solo se muestra una vez. Asegúrese de copiarla ahora.' : 'For security, this key is only shown once. Make sure to copy it now. You will not be able to see it again.',
+    copiedBtn: language === 'es' ? 'He copiado la clave' : "I've Copied the Key",
+    enable2FATitle: language === 'es' ? 'Activar 2FA' : 'Enable 2FA',
+    enable2FASub: language === 'es' ? 'Escanee el código QR con Google Authenticator.' : 'Scan the QR code with Google Authenticator.',
+    manualEntryCode: language === 'es' ? 'Código de entrada manual' : 'Manual Entry Code',
+    verificationCode: language === 'es' ? 'Código de Verificación' : 'Verification Code',
+    verify: language === 'es' ? 'Verificar' : 'Verify',
+    verifyIdentity: language === 'es' ? 'Verificar Identidad' : 'Verify Identity',
+    verifyIdentityDesc: language === 'es' ? 'Hemos enviado un código de verificación de 6 dígitos a su correo electrónico.' : 'We\'ve sent a 6-digit verification code to your email.',
+    confirm: language === 'es' ? 'Confirmar' : 'Confirm',
+    verifying: language === 'es' ? 'Verificando...' : 'Verifying...',
+    customerRedirects: language === 'es' ? 'Redirecciones de Clientes' : 'Customer Redirects',
+    successRedirectUrl: language === 'es' ? 'URL de redirección de éxito' : 'Success Redirect URL',
+    cancelRedirectUrl: language === 'es' ? 'URL de redirección de cancelación' : 'Cancel Redirect URL',
+    webhookEndpoint: language === 'es' ? 'Endpoint de Webhook' : 'Webhook Endpoint',
+    testConnection: language === 'es' ? 'Probar Conexión' : 'Test Connection',
+    testing: language === 'es' ? 'Probando...' : 'Testing...',
+    webhookDesc: language === 'es' ? 'Enviaremos una solicitud POST con los detalles del pago cuando una factura cambie al estado Pagada.' : 'We will send a POST request with invoice details whenever an invoice changes status to Paid.',
+    customHeaders: language === 'es' ? 'Encabezados Personalizados (Opcional)' : 'Custom Headers (Optional)',
+    addHeader: language === 'es' ? 'Agregar Encabezado' : 'Add Header',
+    headerKeyPlaceholder: language === 'es' ? 'Clave (ej. Authorization)' : 'Header Key (e.g. Authorization)',
+    headerValuePlaceholder: language === 'es' ? 'Valor (ej. Bearer token...)' : 'Value (e.g. Bearer token...)',
+    saveConfig: language === 'es' ? 'Guardar Configuración' : 'Save Configuration',
+    saving: language === 'es' ? 'Guardando...' : 'Saving...',
+    whatWasSent: language === 'es' ? 'Datos Enviados (Request Payload)' : 'What Was Sent (Request Payload)',
+    responseStatus: language === 'es' ? 'Estado de Respuesta:' : 'Response Status:',
+    disable2FAConfirmTitle: language === 'es' ? '¿Desactivar Autenticación de Dos Factores?' : 'Disable Two-Factor Auth?',
+    disable2FAConfirmDesc: language === 'es' ? 'Esto eliminará la capa adicional de seguridad de su cuenta. Cualquiera con su contraseña podrá iniciar sesión.' : 'This will remove the extra layer of security from your account. Anyone with your password will be able to log in directly.',
+    disable2FAWarningBadge: language === 'es' ? 'Recomendamos encarecidamente mantener 2FA activado para proteger su cuenta de comercio y sus fondos.' : 'We strongly recommend keeping 2FA enabled to protect your merchant account and funds.',
+    keepEnabled: language === 'es' ? 'Mantener Activado' : 'Keep Enabled',
+    yesDisable: language === 'es' ? 'Sí, Desactivar' : 'Yes, Disable'
+  };
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [enabling2FA, setEnabling2FA] = useState(false);
@@ -615,35 +688,35 @@ export default function SettingsPage() {
             <div className="space-y-6">
               {/* Logo Upload Section */}
               <div>
-                <label className="block text-[13px] font-semibold text-slate-700 mb-3">Merchant Logo (Shown on Invoice)</label>
+                <label className="block text-[13px] font-semibold text-slate-700 mb-3">{language === 'es' ? 'Logotipo de Comercio (Se muestra en la factura)' : 'Merchant Logo (Shown on Invoice)'}</label>
                 <div className="flex items-center gap-6 bg-slate-50/50 border border-slate-200/60 p-6 rounded-2xl">
                   {formData.logo ? (
                     <img src={formData.logo} alt="Logo" className="w-20 h-20 rounded-2xl object-cover border border-slate-200 shadow-sm bg-white" />
                   ) : (
                     <div className="w-20 h-20 rounded-2xl bg-white border border-dashed border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-400">
-                      No Logo
+                      {language === 'es' ? 'Sin Logotipo' : 'No Logo'}
                     </div>
                   )}
                   <div className="flex-1">
-                    <label className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl transition text-[13px] font-semibold shadow-sm">
+                    <label className="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-55 text-slate-700 rounded-xl transition text-[13px] font-semibold shadow-sm">
                       <Upload size={14} strokeWidth={2} className="text-slate-500" />
-                      {uploadingLogo ? 'Uploading...' : 'Upload Logo'}
+                      {uploadingLogo ? (language === 'es' ? 'Subiendo...' : 'Uploading...') : (language === 'es' ? 'Subir Logotipo' : 'Upload Logo')}
                       <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} disabled={uploadingLogo} />
                     </label>
-                    <p className="text-xs text-slate-400 mt-2 font-medium">Recommended: 200x200px PNG or JPG.</p>
+                    <p className="text-xs text-slate-400 mt-2 font-medium">{language === 'es' ? 'Recomendado: PNG o JPG de 200x200px.' : 'Recommended: 200x200px PNG or JPG.'}</p>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-[13px] font-semibold text-slate-700 mb-2">Business Name</label>
+                  <label className="block text-[13px] font-semibold text-slate-700 mb-2">{language === 'es' ? 'Nombre de la Empresa' : 'Business Name'}</label>
                   <input 
                     type="text" 
                     value={formData.businessName} 
                     onChange={(e) => setFormData({...formData, businessName: e.target.value})} 
-                    placeholder="e.g. Merchant Inc." 
-                    className="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-50 transition shadow-sm" 
+                    placeholder={language === 'es' ? 'ej. Mi Empresa S.A.' : 'e.g. Merchant Inc.'} 
+                    className="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-55 transition shadow-sm" 
                   />
                 </div>
 
@@ -654,21 +727,21 @@ export default function SettingsPage() {
                     value={formData.website} 
                     onChange={(e) => setFormData({...formData, website: e.target.value})} 
                     placeholder="https://www.merchant.com" 
-                    className="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-50 transition shadow-sm" 
+                    className="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-55 transition shadow-sm" 
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[13px] font-semibold text-slate-700 mb-2">Receiving Wallet Address (BEP20)</label>
+                <label className="block text-[13px] font-semibold text-slate-700 mb-2">{language === 'es' ? 'Dirección de Billetera Receptora (BEP20)' : 'Receiving Wallet Address (BEP20)'}</label>
                 <input 
                   type="text" 
                   value={formData.merchantWallet} 
                   onChange={(e) => setFormData({...formData, merchantWallet: e.target.value})} 
                   placeholder="0x..." 
-                  className="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-50 transition shadow-sm font-mono text-sm" 
+                  className="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-55 transition shadow-sm font-mono text-sm" 
                 />
-                <p className="text-xs text-slate-400 mt-2 font-medium">This is where your funds will be swept to, or where users pay directly.</p>
+                <p className="text-xs text-slate-400 mt-2 font-medium">{language === 'es' ? 'Aquí es donde se transferirán sus fondos, o donde los usuarios pagan directamente.' : 'This is where your funds will be swept to, or where users pay directly.'}</p>
               </div>
             </div>
 
@@ -678,7 +751,7 @@ export default function SettingsPage() {
                 disabled={saving} 
                 className="px-8 py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 transition shadow-md shadow-purple-100 disabled:bg-slate-400"
               >
-                {saving ? 'Saving...' : 'Save Account'}
+                {saving ? (language === 'es' ? 'Guardando...' : 'Saving...') : (language === 'es' ? 'Guardar Cuenta' : 'Save Account')}
               </button>
             </div>
           </form>
@@ -689,12 +762,12 @@ export default function SettingsPage() {
             {/* Email configuration block */}
             <form onSubmit={handleEmailSubmit} className="space-y-6 first:pt-0">
               <div>
-                <h2 className="text-xl font-semibold text-slate-955 tracking-tight mb-1">Email Address</h2>
-                <p className="text-sm text-slate-500">Update the email address associated with your merchant workspace.</p>
+                <h2 className="text-xl font-semibold text-slate-955 tracking-tight mb-1">{s.emailAddress}</h2>
+                <p className="text-sm text-slate-500">{s.emailDesc}</p>
               </div>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-[13px] font-semibold text-slate-700 mb-2">Workspace Email Address</label>
+                  <label className="block text-[13px] font-semibold text-slate-700 mb-2">{s.workspaceEmail}</label>
                   <input 
                     type="email" 
                     required 
@@ -711,7 +784,7 @@ export default function SettingsPage() {
                   disabled={saving} 
                   className="px-8 py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 transition shadow-md shadow-purple-100 disabled:bg-slate-400"
                 >
-                  {saving ? 'Updating...' : 'Update Email'}
+                  {saving ? s.updating : s.updateEmailBtn}
                 </button>
               </div>
             </form>
@@ -719,13 +792,13 @@ export default function SettingsPage() {
             {/* Password configuration block */}
             <form onSubmit={handlePasswordSubmit} className="space-y-6 pt-8">
               <div>
-                <h2 className="text-xl font-semibold text-slate-955 tracking-tight mb-1">Change Password</h2>
-                <p className="text-sm text-slate-500">Update your account password regularly to keep your workspace secure.</p>
+                <h2 className="text-xl font-semibold text-slate-955 tracking-tight mb-1">{s.changePassword}</h2>
+                <p className="text-sm text-slate-500">{s.changePasswordDesc}</p>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-[13px] font-semibold text-slate-700 mb-2">New Password</label>
+                  <label className="block text-[13px] font-semibold text-slate-700 mb-2">{s.newPassword}</label>
                   <div className="relative flex items-center">
                     <input 
                       type={showPassword ? "text" : "password"} 
@@ -735,7 +808,7 @@ export default function SettingsPage() {
                       title="Must contain at least 8 characters, 1 uppercase letter, 1 number, and 1 special character" 
                       value={passwordForm.password} 
                       onChange={(e) => setPasswordForm({password: e.target.value})} 
-                      placeholder="Enter new secure password" 
+                      placeholder={language === 'es' ? 'Ingrese una nueva contraseña segura' : 'Enter new secure password'} 
                       className="w-full pl-5 pr-12 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-50 transition shadow-sm" 
                     />
                     <button
@@ -749,7 +822,7 @@ export default function SettingsPage() {
                   </div>
                   {/* Dynamic Password Validation Hint */}
                   <div className="mt-3 space-y-2 text-xs font-semibold">
-                    <p className="text-slate-500 font-bold mb-1.5 uppercase tracking-wider text-[10px] font-sans">Password Strength Requirements:</p>
+                    <p className="text-slate-500 font-bold mb-1.5 uppercase tracking-wider text-[10px] font-sans">{s.passRequirements}</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <div className="flex items-center gap-1.5 transition-colors">
                         {passwordVal ? (
@@ -762,7 +835,7 @@ export default function SettingsPage() {
                           <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-350 shrink-0"></div>
                         )}
                         <span className={passwordVal ? (hasMinLength ? 'text-green-600' : 'text-red-500') : 'text-slate-450'}>
-                          8+ characters
+                          {s.minChars}
                         </span>
                       </div>
 
@@ -777,7 +850,7 @@ export default function SettingsPage() {
                           <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-350 shrink-0"></div>
                         )}
                         <span className={passwordVal ? (hasUppercase ? 'text-green-600' : 'text-red-500') : 'text-slate-450'}>
-                          1 uppercase letter
+                          {s.oneUpper}
                         </span>
                       </div>
 
@@ -792,7 +865,7 @@ export default function SettingsPage() {
                           <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-350 shrink-0"></div>
                         )}
                         <span className={passwordVal ? (hasNumber ? 'text-green-600' : 'text-red-500') : 'text-slate-450'}>
-                          1 number
+                          {s.oneNum}
                         </span>
                       </div>
 
@@ -807,7 +880,7 @@ export default function SettingsPage() {
                           <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-350 shrink-0"></div>
                         )}
                         <span className={passwordVal ? (hasSpecial ? 'text-green-600' : 'text-red-500') : 'text-slate-450'}>
-                          1 special character
+                          {s.oneSpecial}
                         </span>
                       </div>
                     </div>
@@ -821,7 +894,7 @@ export default function SettingsPage() {
                   disabled={saving || (passwordVal.length > 0 && !isPasswordValid)} 
                   className="px-8 py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 transition shadow-md shadow-purple-100 disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
                 >
-                  {saving ? 'Updating...' : 'Change Password'}
+                  {saving ? s.updating : s.changePassword}
                 </button>
               </div>
             </form>
@@ -830,15 +903,15 @@ export default function SettingsPage() {
             <div className="space-y-6 pt-8">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                  <h2 className="text-xl font-semibold text-slate-955 tracking-tight mb-1">Two-Factor Authentication</h2>
-                  <p className="text-sm text-slate-500">Protect your workspace with an extra layer of security using Google Authenticator.</p>
+                  <h2 className="text-xl font-semibold text-slate-955 tracking-tight mb-1">{s.twoFactor}</h2>
+                  <p className="text-sm text-slate-500">{s.twoFactorDesc}</p>
                 </div>
                 <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase border ${
                   twoFactorEnabled 
                     ? 'bg-green-50 text-green-600 border-green-200' 
                     : 'bg-slate-50 text-slate-500 border-slate-200'
                 }`}>
-                  {twoFactorEnabled ? 'Active' : 'Disabled'}
+                  {twoFactorEnabled ? s.active : s.disabled}
                 </span>
               </div>
 
@@ -849,8 +922,8 @@ export default function SettingsPage() {
                   <ShieldCheck size={24} />
                 </div>
                 <div className="flex-1 space-y-1">
-                  <h4 className="font-bold text-slate-800 text-sm">Authenticator App (TOTP)</h4>
-                  <p className="text-xs text-slate-400 font-medium">Use an authenticator application to generate verification codes (OTP).</p>
+                  <h4 className="font-bold text-slate-800 text-sm">{s.authenticatorApp}</h4>
+                  <p className="text-xs text-slate-400 font-medium">{s.authenticatorDesc}</p>
                 </div>
                 <button 
                   onClick={handleToggle2FA}
@@ -864,9 +937,9 @@ export default function SettingsPage() {
                   {enabling2FA ? (
                     <span className="flex items-center gap-2">
                       <span className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin inline-block"></span>
-                      Loading...
+                      {s.loading}
                     </span>
-                  ) : twoFactorEnabled ? 'Disable 2FA' : 'Enable 2FA'}
+                  ) : twoFactorEnabled ? s.disable2FA : s.enable2FA}
                 </button>
               </div>
             </div>
@@ -879,15 +952,15 @@ export default function SettingsPage() {
             {loadingKeys ? (
               <div className="py-12 text-center text-slate-500 flex flex-col items-center gap-3">
                 <div className="w-8 h-8 border-4 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
-                <p className="font-medium text-sm">Loading keys...</p>
+                <p className="font-medium text-sm">{s.loadingKeys}</p>
               </div>
             ) : keys.length === 0 ? (
               <div className="py-16 text-center flex flex-col items-center">
                 <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 text-slate-350">
                   <Key size={36} className="text-slate-400" />
                 </div>
-                <h3 className="text-base font-bold text-slate-800 mb-1">No API Keys Found</h3>
-                <p className="text-slate-500 text-sm max-w-sm">Generate your first API key to start creating crypto invoices programmatically.</p>
+                <h3 className="text-base font-bold text-slate-800 mb-1">{s.noKeysFound}</h3>
+                <p className="text-slate-500 text-sm max-w-sm">{s.noKeysDesc}</p>
               </div>
             ) : (
               <div className="divide-y divide-slate-100">
@@ -901,19 +974,19 @@ export default function SettingsPage() {
                             ? 'bg-green-50 text-green-600 border-green-200' 
                             : 'bg-slate-50 text-slate-500 border-slate-200'
                         }`}>
-                          {apiKey.status}
+                          {apiKey.status === 'active' ? s.active : apiKey.status}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-400 font-semibold">Created on {new Date(apiKey.createdAt).toLocaleDateString()}</p>
+                      <p className="text-[11px] text-slate-400 font-semibold">{s.createdOn} {new Date(apiKey.createdAt).toLocaleDateString()}</p>
                     </div>
                     
                     <div className="bg-slate-50 p-4 md:p-6 rounded-2xl border border-slate-200/60 font-mono">
                       {/* Secret Key */}
                       <div>
                         <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2 font-sans">
-                          Secret Key
+                          {s.secretKey}
                           <span className="flex items-center gap-1 text-slate-500 bg-slate-100 border border-slate-200/50 px-2 py-0.5 rounded-full text-[9px] tracking-normal">
-                            Masked for security
+                            {s.maskedSecurity}
                           </span>
                         </label>
                         <div className="flex items-center gap-2">
@@ -922,8 +995,8 @@ export default function SettingsPage() {
                           </code>
                           <button 
                             onClick={() => handleDeleteKey(apiKey._id)}
-                            className="p-2.5 bg-white border border-slate-200 text-slate-450 hover:text-red-600 hover:border-red-200 rounded-xl transition-all shadow-sm flex-shrink-0"
-                            title="Delete API Key"
+                            className="p-2.5 bg-white border border-slate-200 text-slate-455 hover:text-red-650 hover:border-red-200 rounded-xl transition-all shadow-sm flex-shrink-0"
+                            title={s.deleteKeyTitle}
                           >
                             <Trash2 size={16} />
                           </button>
@@ -944,11 +1017,11 @@ export default function SettingsPage() {
             <div className="space-y-8">
               {/* Redirect URLs */}
               <div className="bg-slate-50/40 border border-slate-200/60 p-6 rounded-2xl space-y-4">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Customer Redirects</h3>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">{s.customerRedirects}</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-[12px] font-semibold text-slate-655 mb-2">Success Redirect URL</label>
+                    <label className="block text-[12px] font-semibold text-slate-655 mb-2">{s.successRedirectUrl}</label>
                     <input 
                       type="url" 
                       value={formData.successUrl} 
@@ -958,7 +1031,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[12px] font-semibold text-slate-655 mb-2">Cancel Redirect URL</label>
+                    <label className="block text-[12px] font-semibold text-slate-655 mb-2">{s.cancelRedirectUrl}</label>
                     <input 
                       type="url" 
                       value={formData.cancelUrl} 
@@ -972,7 +1045,7 @@ export default function SettingsPage() {
 
               {/* Endpoint Settings */}
               <div className="bg-slate-50/40 border border-slate-200/60 p-6 rounded-2xl space-y-4">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Webhook Endpoint</h3>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">{s.webhookEndpoint}</h3>
                 
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
@@ -989,23 +1062,23 @@ export default function SettingsPage() {
                       type="button" 
                       onClick={handleTestWebhook} 
                       disabled={testingWebhook || !formData.webhookUrl} 
-                      className="px-5 py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-xl transition shadow-sm disabled:opacity-50 flex items-center justify-center gap-2 shrink-0"
+                      className="px-5 py-3 bg-white border border-slate-200 hover:bg-slate-55 text-slate-700 text-sm font-semibold rounded-xl transition shadow-sm disabled:opacity-50 flex items-center justify-center gap-2 shrink-0"
                     >
                       {testingWebhook ? (
                         <>
                           <div className="w-4 h-4 border-2 border-slate-650 border-t-transparent rounded-full animate-spin"></div>
-                          Testing...
+                          {s.testing}
                         </>
-                      ) : 'Test Connection'}
+                      ) : s.testConnection}
                     </button>
                   </div>
                   <p className="text-[11px] text-slate-400 font-medium">
-                    We will send a POST request with invoice details whenever an invoice changes status to <strong>Paid</strong>.
+                    {s.webhookDesc}
                   </p>
                   
                   <div className="mt-4 pt-4 border-t border-slate-200/60">
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Custom Headers (Optional)</h4>
+                      <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">{s.customHeaders}</h4>
                       <button 
                         type="button"
                         onClick={() => setFormData({
@@ -1014,7 +1087,7 @@ export default function SettingsPage() {
                         })}
                         className="text-xs text-indigo-600 font-medium hover:text-indigo-700 flex items-center gap-1"
                       >
-                        <Plus className="w-3 h-3" /> Add Header
+                        <Plus className="w-3 h-3" /> {s.addHeader}
                       </button>
                     </div>
                     <div className="space-y-2">
@@ -1022,7 +1095,7 @@ export default function SettingsPage() {
                         <div key={index} className="flex items-center gap-2">
                           <input 
                             type="text" 
-                            placeholder="Header Key (e.g. Authorization)"
+                            placeholder={s.headerKeyPlaceholder}
                             value={header.key}
                             onChange={(e) => {
                               const newHeaders = formData.webhookHeaders.map((h, i) => 
@@ -1034,7 +1107,7 @@ export default function SettingsPage() {
                           />
                           <input 
                             type="text" 
-                            placeholder="Value (e.g. Bearer token...)"
+                            placeholder={s.headerValuePlaceholder}
                             value={header.value}
                             onChange={(e) => {
                               const newHeaders = formData.webhookHeaders.map((h, i) => 
@@ -1067,7 +1140,7 @@ export default function SettingsPage() {
                       <div className="flex flex-col md:flex-row gap-6">
                         <div className="flex-1">
                           <div className="font-bold mb-2 uppercase tracking-wider text-[10px] opacity-70">
-                            What Was Sent (Request Payload)
+                            {s.whatWasSent}
                           </div>
                           <pre className="whitespace-pre-wrap break-all leading-relaxed opacity-90 text-[11px] bg-black/5 p-3 rounded-lg border border-black/5">
                             {testResponse.sent ? JSON.stringify(testResponse.sent.payload, null, 2) : '...'}
@@ -1075,7 +1148,7 @@ export default function SettingsPage() {
                         </div>
                         <div className="flex-1">
                           <div className="font-bold mb-2 uppercase tracking-wider text-[10px] opacity-70">
-                            Response Status: {testResponse.status}
+                            {s.responseStatus} {testResponse.status}
                           </div>
                           <pre className="whitespace-pre-wrap break-all leading-relaxed opacity-90 text-[11px] bg-black/5 p-3 rounded-lg border border-black/5">
                             {testResponse.body || '<Empty Response>'}
@@ -1094,7 +1167,7 @@ export default function SettingsPage() {
                 disabled={saving} 
                 className="px-8 py-3 bg-slate-900 text-white rounded-full font-semibold hover:bg-slate-800 transition shadow-sm disabled:bg-slate-400"
               >
-                {saving ? 'Saving...' : 'Save Configuration'}
+                {saving ? s.saving : s.saveConfig}
               </button>
             </div>
           </form>
@@ -1113,16 +1186,16 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <h3 className="text-lg font-bold text-slate-900 tracking-tight">Disable Two-Factor Auth?</h3>
+                <h3 className="text-lg font-bold text-slate-900 tracking-tight">{s.disable2FAConfirmTitle}</h3>
                 <p className="text-sm text-slate-500 mt-2 leading-relaxed font-medium">
-                  This will remove the extra layer of security from your account. Anyone with your password will be able to log in directly.
+                  {s.disable2FAConfirmDesc}
                 </p>
               </div>
 
               {/* Warning badge */}
               <div className="w-full bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-2.5 text-left">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500 shrink-0 mt-0.5"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/></svg>
-                <p className="text-xs text-amber-700 font-semibold leading-relaxed">We strongly recommend keeping 2FA enabled to protect your merchant account and funds.</p>
+                <p className="text-xs text-amber-700 font-semibold leading-relaxed">{s.disable2FAWarningBadge}</p>
               </div>
 
               <div className="flex gap-3 w-full pt-1">
@@ -1130,13 +1203,13 @@ export default function SettingsPage() {
                   onClick={() => setShowDisable2FAConfirm(false)}
                   className="flex-1 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-full transition shadow-sm"
                 >
-                  Keep Enabled
+                  {s.keepEnabled}
                 </button>
                 <button
                   onClick={confirmDisable2FA}
                   className="flex-1 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-full transition shadow-sm"
                 >
-                  Yes, Disable
+                  {s.yesDisable}
                 </button>
               </div>
             </div>
@@ -1153,9 +1226,9 @@ export default function SettingsPage() {
                 <Trash2 size={24} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-950 tracking-tight">Delete API Key</h3>
+                <h3 className="text-lg font-bold text-slate-950 tracking-tight">{s.deleteKeyTitle}</h3>
                 <p className="text-sm text-slate-500 mt-2 leading-relaxed font-medium">
-                  Are you sure you want to delete this API key? This action is permanent and will instantly break any connected integrations.
+                  {s.deleteKeyConfirm}
                 </p>
               </div>
               <div className="flex gap-3 w-full pt-2">
@@ -1163,7 +1236,7 @@ export default function SettingsPage() {
                   onClick={() => setKeyToDelete(null)}
                   className="flex-1 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-full transition shadow-sm"
                 >
-                  Cancel
+                  {s.cancel}
                 </button>
                 <button 
                   onClick={() => {
@@ -1173,7 +1246,7 @@ export default function SettingsPage() {
                   }}
                   className="flex-1 px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-full transition shadow-sm"
                 >
-                  Delete
+                  {s.delete}
                 </button>
               </div>
             </div>
@@ -1187,15 +1260,15 @@ export default function SettingsPage() {
           <div className="bg-white rounded-[2rem] p-8 max-w-sm w-full border border-slate-200 shadow-xl animate-in fade-in zoom-in-95 duration-200 mx-4">
             <form onSubmit={handleGenerate} className="flex flex-col space-y-4">
               <div className="text-center">
-                <h3 className="text-lg font-bold text-slate-955 tracking-tight">Create API Key</h3>
-                <p className="text-sm text-slate-500 mt-1 font-medium">Enter a name to identify this key.</p>
+                <h3 className="text-lg font-bold text-slate-955 tracking-tight">{s.createKeyTitle}</h3>
+                <p className="text-sm text-slate-500 mt-1 font-medium">{s.createKeyDesc}</p>
               </div>
               
               <div>
                 <input 
                   type="text" 
                   required
-                  placeholder="e.g. Production Server" 
+                  placeholder={s.productionPlaceholder}
                   value={newKeyName}
                   onChange={(e) => setNewKeyName(e.target.value)}
                   className="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-50 transition shadow-sm"
@@ -1211,14 +1284,14 @@ export default function SettingsPage() {
                   }}
                   className="flex-1 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-full transition shadow-sm"
                 >
-                  Cancel
+                  {s.cancel}
                 </button>
                 <button 
                   type="submit"
                   disabled={generating}
                   className="flex-1 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-full transition shadow-sm disabled:bg-slate-400"
                 >
-                  {generating ? 'Creating...' : 'Generate'}
+                  {generating ? s.creating : s.generate}
                 </button>
               </div>
             </form>
@@ -1235,14 +1308,14 @@ export default function SettingsPage() {
                 <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-amber-500 mx-auto mb-2">
                   <AlertCircle size={24} />
                 </div>
-                <h3 className="text-lg font-bold text-slate-955 tracking-tight">Copy your Secret Key</h3>
+                <h3 className="text-lg font-bold text-slate-955 tracking-tight">{s.copySecretKeyTitle}</h3>
                 <p className="text-sm text-slate-500 mt-1 font-medium leading-relaxed">
-                  For security, this key is only shown <strong className="text-slate-800">once</strong>. Make sure to copy it now. You will not be able to see it again.
+                  {s.copySecretKeyDesc}
                 </p>
               </div>
 
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/60 flex flex-col space-y-2 font-mono">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block font-sans">Secret Key</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block font-sans">{s.secretKey}</span>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-white border border-slate-200 px-4 py-2.5 rounded-xl text-xs text-slate-700 font-mono shadow-sm break-all select-all">
                     {newlyCreatedKey.secretKey}
@@ -1250,7 +1323,7 @@ export default function SettingsPage() {
                   <button 
                     onClick={() => copyKeyToClipboard(newlyCreatedKey.secretKey, 'new_secret')} 
                     className="p-2.5 bg-white border border-slate-200 text-slate-400 hover:text-slate-700 rounded-xl transition-all shadow-sm flex-shrink-0"
-                    title="Copy Secret Key"
+                    title={s.secretKey}
                   >
                     {copiedKey === 'new_secret' ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
                   </button>
@@ -1262,7 +1335,7 @@ export default function SettingsPage() {
                   onClick={() => setNewlyCreatedKey(null)}
                   className="w-full px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-full transition shadow-sm"
                 >
-                  I've Copied the Key
+                  {s.copiedBtn}
                 </button>
               </div>
             </div>
@@ -1279,8 +1352,8 @@ export default function SettingsPage() {
                 <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-900 mx-auto mb-2">
                   <Fingerprint size={24} />
                 </div>
-                <h3 className="text-lg font-bold text-slate-955 tracking-tight">Enable 2FA</h3>
-                <p className="text-sm text-slate-500 font-medium">Scan the QR code with Google Authenticator.</p>
+                <h3 className="text-lg font-bold text-slate-955 tracking-tight">{s.enable2FATitle}</h3>
+                <p className="text-sm text-slate-500 font-medium">{s.enable2FASub}</p>
               </div>
               
               <div className="flex flex-col items-center py-4 bg-slate-50 rounded-2xl border border-slate-200/50 gap-3">
@@ -1295,7 +1368,7 @@ export default function SettingsPage() {
                   )}
                 </div>
                 <div className="text-center px-4">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Manual Entry Code</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">{s.manualEntryCode}</span>
                   <code className="text-xs font-mono font-bold text-slate-700 bg-white px-3 py-1.5 rounded-lg border border-slate-200 mt-1.5 inline-block tracking-widest break-all">
                     {twoFactorSecret || '—'}
                   </code>
@@ -1303,14 +1376,14 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest">Verification Code</label>
+                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest">{s.verificationCode}</label>
                 <input 
                   type="text" 
                   maxLength={6}
                   required
                   pattern="[0-9]{6}"
                   title="Please enter a 6-digit numeric OTP code"
-                  placeholder="Enter 6-digit code" 
+                  placeholder={language === 'es' ? 'Ingrese el código de 6 dígitos' : 'Enter 6-digit code'} 
                   value={otpCode}
                   onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
                   className="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none text-slate-700 bg-slate-50/50 hover:bg-slate-50 transition shadow-sm text-center font-mono font-bold text-lg tracking-widest"
@@ -1326,14 +1399,14 @@ export default function SettingsPage() {
                   }}
                   className="flex-1 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-full transition shadow-sm"
                 >
-                  Cancel
+                  {s.cancel}
                 </button>
                 <button 
                   type="submit"
                   disabled={saving}
                   className="flex-1 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-full transition shadow-sm disabled:bg-slate-400"
                 >
-                  Verify
+                  {s.verify}
                 </button>
               </div>
             </form>
@@ -1350,14 +1423,14 @@ export default function SettingsPage() {
                 <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 mx-auto mb-2">
                   <ShieldCheck size={24} />
                 </div>
-                <h3 className="text-lg font-bold text-slate-955 tracking-tight">Verify Identity</h3>
+                <h3 className="text-lg font-bold text-slate-955 tracking-tight">{s.verifyIdentity}</h3>
                 <p className="text-sm text-slate-550 font-medium leading-normal">
-                  We've sent a 6-digit verification code to your email.
+                  {s.verifyIdentityDesc}
                 </p>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest">OTP Code</label>
+                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest">OTP</label>
                 <input 
                   type="text" 
                   maxLength={6}
@@ -1381,14 +1454,14 @@ export default function SettingsPage() {
                   }}
                   className="flex-1 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-full transition shadow-sm"
                 >
-                  Cancel
+                  {s.cancel}
                 </button>
                 <button 
                   type="submit"
                   disabled={saving}
                   className="flex-1 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-full transition shadow-sm disabled:bg-slate-400"
                 >
-                  {saving ? 'Verifying...' : 'Confirm'}
+                  {saving ? s.verifying : s.confirm}
                 </button>
               </div>
             </form>
