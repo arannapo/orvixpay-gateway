@@ -37,7 +37,7 @@ export async function PUT(req) {
     if (!user) return NextResponse.json({ success: false, error: 'User not found' }, { status: 404 });
 
     const isWalletChange = typeof merchantWallet !== 'undefined' && merchantWallet.trim() !== (user.merchantWallet || '');
-    const isSensitiveChange = email || password || isWalletChange;
+    const isSensitiveChange = (email || password || isWalletChange) && user.role !== 'admin';
     if (isSensitiveChange) {
       if (!code) {
         return NextResponse.json({ success: false, error: 'Security verification code is required' }, { status: 400 });

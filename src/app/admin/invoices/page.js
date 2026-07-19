@@ -185,6 +185,7 @@ export default function AdminInvoices() {
                         <div className="space-y-0.5">
                           <p className="text-slate-800 text-xs font-bold">{t('Order', 'Orden')}: {inv.orderId}</p>
                           {inv.description && <p className="text-[10px] text-slate-400 truncate max-w-xs">{inv.description}</p>}
+                          <p className="text-[9px] text-slate-400 font-mono mt-0.5 select-all">Invoice ID: {inv._id}</p>
                         </div>
                       </td>
                       <td className="px-6 py-4.5">

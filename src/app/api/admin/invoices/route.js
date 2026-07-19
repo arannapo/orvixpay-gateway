@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import dbConnect from '@/lib/mongodb';
 import Invoice from '@/models/Invoice';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,12 +40,17 @@ export async function GET(req) {
     }
 
     if (search) {
-      // Find invoices matching txHash, customerEmail, or customId
-      query.$or = [
-        { txHash: { $regex: search, $options: 'i' } },
+      const conditions = [
+        { transactionHash: { $regex: search, $options: 'i' } },
         { customerEmail: { $regex: search, $options: 'i' } },
-        { customId: { $regex: search, $options: 'i' } }
+        { orderId: { $regex: search, $options: 'i' } }
       ];
+      
+      if (mongoose.Types.ObjectId.isValid(search)) {
+        conditions.push({ _id: search });
+      }
+      
+      query.$or = conditions;
     }
 
     const invoices = await Invoice.find(query)

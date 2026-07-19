@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { LogOut, LayoutDashboard, Receipt, Users, Menu, X, ShieldAlert } from 'lucide-react';
+import { LayoutDashboard, Users, Receipt, X, Menu, ShieldAlert, LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -45,6 +45,12 @@ export default function AdminLayout({ children }) {
       path: '/admin/invoices', 
       icon: Receipt 
     },
+    { 
+      name: 'Settings', 
+      nameEs: 'Configuración',
+      path: '/admin/settings', 
+      icon: Settings 
+    },
   ];
 
   return (
@@ -62,7 +68,6 @@ export default function AdminLayout({ children }) {
         <div className="flex items-center justify-between px-6 mb-12">
           <Link href="/" className="flex items-center gap-2 pl-2 hover:opacity-80 transition-opacity">
             <img src="/logo.PNG" alt="ORVIXPAY" className="h-10 object-contain invert brightness-0" />
-            <span className="text-[10px] font-bold tracking-widest text-purple-400 border border-purple-500/30 px-2 py-0.5 rounded-full uppercase bg-purple-950/20">Admin</span>
           </Link>
           <button className="md:hidden text-slate-400 hover:text-slate-200 bg-slate-900 p-1 rounded-full shadow-sm" onClick={() => setIsMobileMenuOpen(false)}>
             <X size={20} />

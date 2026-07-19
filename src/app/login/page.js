@@ -192,9 +192,9 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSg0MCAwIEwgMCAwIDAgNDApIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMCwwLDAsMC4wMikiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4n)] opacity-85 pointer-events-none z-0" />
         
         {/* Top: Logo */}
-        <div className="flex items-center gap-3 relative z-10 pl-4">
+        <Link href="/" className="flex items-center gap-3 relative z-10 pl-4 cursor-pointer">
           <img src="/logo.PNG" alt="ORVIXPAY" className="h-10 object-contain" />
-        </div>
+        </Link>
 
         {/* Center Content: Clean and Minimal Branding */}
         <div className="my-auto relative z-10 max-w-sm space-y-6 pl-4">
@@ -227,7 +227,9 @@ export default function LoginPage() {
           
           {/* Header */}
           <div className="text-center mb-8">
-            <img src="/logo.PNG" alt="ORVIXPAY" className="h-10 mx-auto mb-4 object-contain lg:hidden" />
+            <Link href="/">
+              <img src="/logo.PNG" alt="ORVIXPAY" className="h-10 mx-auto mb-4 object-contain lg:hidden cursor-pointer" />
+            </Link>
             <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">{headings[step]?.title}</h2>
             <p className="text-sm text-slate-500 mt-2 font-medium">{headings[step]?.subtitle}</p>
           </div>
@@ -392,6 +394,12 @@ export default function LoginPage() {
 
           <div className="mt-8 text-center text-sm font-medium text-slate-500">
             {t("authNoAccount")} <Link href="/register" className="text-slate-900 hover:text-purple-600 transition-colors font-bold">{t("authRegisterHere")}</Link>
+          </div>
+
+          <div className="text-center mt-6">
+            <Link href="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-purple-600 transition">
+              ← {language === 'es' ? 'Volver al Inicio' : 'Back to Home'}
+            </Link>
           </div>
         </div>
       </div>

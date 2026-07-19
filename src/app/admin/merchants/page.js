@@ -156,7 +156,121 @@ export default function AdminMerchants() {
       </div>
 
       <div className="bg-white border border-slate-200/60 rounded-3xl overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
+        {/* Mobile Card List View (Visible on Mobile Only) */}
+        <div className="block md:hidden divide-y divide-slate-100 overflow-hidden">
+          {filteredMerchants.length === 0 ? (
+            <div className="py-12 text-center text-sm font-semibold text-slate-400 bg-slate-50/20">
+              {t('No merchants found matching the parameters.', 'No se encontraron comercios que coincidan con los parámetros.')}
+            </div>
+          ) : (
+            filteredMerchants.map((merchant) => (
+              <div key={merchant._id} className="p-5 space-y-4 bg-white hover:bg-slate-50/50 transition">
+                {/* Header info */}
+                <div className="flex justify-between items-start gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-50 text-slate-700 flex items-center justify-center font-bold text-xs shrink-0 border border-slate-200">
+                      {merchant.logo ? (
+                        <img src={merchant.logo} alt="Logo" className="w-full h-full object-cover rounded-xl" />
+                      ) : (
+                        merchant.businessName.substring(0, 2).toUpperCase()
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-800 text-sm">{merchant.businessName}</p>
+                      <p className="text-[11px] text-slate-400 font-mono">ID: {merchant._id}</p>
+                    </div>
+                  </div>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border shrink-0 ${
+                    merchant.isBlocked
+                      ? 'bg-rose-50 text-rose-600 border-rose-100'
+                      : merchant.isEmailVerified
+                      ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                      : 'bg-slate-55 text-slate-400 border-slate-200'
+                  }`}>
+                    {merchant.isBlocked
+                      ? t('Blocked', 'Bloqueado')
+                      : merchant.isEmailVerified
+                      ? t('Verified', 'Verificado')
+                      : t('Unverified', 'Sin Verificar')}
+                  </span>
+                </div>
+
+                {/* Details list */}
+                <div className="space-y-1.5 text-xs text-slate-600 font-medium">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">{t('Email', 'Correo')}:</span>
+                    <span className="text-slate-800 font-semibold">{merchant.email}</span>
+                  </div>
+                  {merchant.website && (
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">{t('Website', 'Sitio Web')}:</span>
+                      <a href={merchant.website} target="_blank" rel="noreferrer" className="text-purple-600 hover:underline flex items-center gap-0.5">
+                        {merchant.website.replace(/^https?:\/\//, '')} <ExternalLink size={10} />
+                      </a>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">{t('Invoices', 'Facturas')}:</span>
+                    <span className="text-slate-800 font-bold">{merchant.invoiceCount || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">{t('Volume', 'Volumen')}:</span>
+                    <span className="text-slate-905 font-extrabold text-slate-900">${(merchant.volume || 0).toFixed(2)}</span>
+                  </div>
+                  <div className="flex flex-col gap-1 pt-1">
+                    <span className="text-slate-400">{t('System Wallet', 'Billetera del Sistema')}:</span>
+                    {merchant.systemWalletAddress ? (
+                      <div className="flex items-center gap-1.5 font-mono bg-slate-50 border border-slate-200/60 p-2 rounded-xl justify-between w-full">
+                        <code className="text-[10px] text-slate-500 select-all break-all pr-2">
+                          {merchant.systemWalletAddress}
+                        </code>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(merchant.systemWalletAddress);
+                            toast.success(t('Copied to clipboard!', '¡Copiado al portapapeles!'));
+                          }}
+                          className="p-1.5 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition shrink-0 bg-white border border-slate-200"
+                        >
+                          <Copy size={12} />
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-slate-350 italic">{t('No Wallet', 'Sin Billetera')}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Action button */}
+                <div className="pt-2 border-t border-slate-100 flex justify-end">
+                  <button
+                    onClick={() => handleToggleBlock(merchant._id, merchant.isBlocked)}
+                    disabled={updatingId === merchant._id}
+                    className={`w-full inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold transition shadow-sm ${
+                      merchant.isBlocked
+                        ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 shadow-emerald-50/50'
+                        : 'bg-rose-50 text-rose-600 hover:bg-rose-100 shadow-rose-50/50'
+                    }`}
+                  >
+                    {merchant.isBlocked ? (
+                      <>
+                        <CheckCircle size={14} />
+                        {t('Unblock Merchant', 'Desbloquear Comercio')}
+                      </>
+                    ) : (
+                      <>
+                        <Ban size={14} />
+                        {t('Block Merchant', 'Bloquear Comercio')}
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50/75 border-b border-slate-100 text-slate-400 text-[10px] font-extrabold uppercase tracking-widest">
