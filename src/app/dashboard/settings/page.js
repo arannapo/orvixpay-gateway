@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import { Upload, CheckCircle2, User, Lock, Palette, Link2, Globe, Key, Copy, Eye, EyeOff, Check, AlertCircle, Plus, Trash2, ShieldCheck, Fingerprint, Code, FileText } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function SettingsPage() {
+  const { t, language } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [enabling2FA, setEnabling2FA] = useState(false);
@@ -513,17 +515,11 @@ export default function SettingsPage() {
               <div className="h-12 bg-slate-200/60 rounded-xl w-full"></div>
               <div className="h-3 bg-slate-200/60 rounded w-72"></div>
             </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const tabs = [
-    { id: 'account', label: 'Account', icon: User },
-    { id: 'security', label: 'Security', icon: Lock },
-    { id: 'apikeys', label: 'API Keys', icon: Key },
-    { id: 'webhooks', label: 'Developer Options', icon: Code },
+   const tabs = [
+    { id: 'account', label: language === 'es' ? 'Cuenta' : 'Account', icon: User },
+    { id: 'security', label: language === 'es' ? 'Seguridad' : 'Security', icon: Lock },
+    { id: 'apikeys', label: language === 'es' ? 'Claves API' : 'API Keys', icon: Key },
+    { id: 'webhooks', label: language === 'es' ? 'Opciones de Desarrollador' : 'Developer Options', icon: Code },
   ];
 
   const passwordVal = passwordForm.password || '';
@@ -547,7 +543,7 @@ export default function SettingsPage() {
               className={`flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all whitespace-nowrap ${
                 isActive 
                   ? 'bg-slate-100 text-slate-900 shadow-sm' 
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                  : 'text-slate-500 hover:bg-slate-55 hover:text-slate-800'
               }`}
             >
               <Icon size={16} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-slate-900' : 'text-slate-400'} />
@@ -563,23 +559,23 @@ export default function SettingsPage() {
         <div className="relative overflow-hidden p-6 md:p-8 border-b border-slate-100 bg-white shrink-0">
           {/* Background mesh & grid */}
           <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-fuchsia-100/60 pointer-events-none z-0"></div>
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSA0MCAwIEwgMCAwIDAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLDAsMCwwLjA0KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-60 pointer-events-none z-0"></div>
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSg0MCAwIEwgMCAwIDAgNDApIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMCwwLDAsMC4wMikiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4n)] opacity-85 pointer-events-none z-0"></div>
           <div className="absolute -left-10 -top-10 w-48 h-48 bg-indigo-200/30 blur-[60px] rounded-full pointer-events-none z-0"></div>
           <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-purple-300/30 blur-[60px] rounded-full pointer-events-none z-0"></div>
 
           <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h2 className="text-xl font-semibold text-slate-950 tracking-tight mb-1">
-                {activeTab === 'account' && 'Account Information'}
-                {activeTab === 'security' && 'Security Settings'}
-                {activeTab === 'apikeys' && 'API Credentials'}
-                {activeTab === 'webhooks' && 'Developer Options'}
+              <h2 className="text-xl font-semibold text-slate-955 tracking-tight mb-1">
+                {activeTab === 'account' && (language === 'es' ? 'Información de Cuenta' : 'Account Information')}
+                {activeTab === 'security' && (language === 'es' ? 'Configuración de Seguridad' : 'Security Settings')}
+                {activeTab === 'apikeys' && (language === 'es' ? 'Credenciales de API' : 'API Credentials')}
+                {activeTab === 'webhooks' && (language === 'es' ? 'Opciones de Desarrollador' : 'Developer Options')}
               </h2>
               <p className="text-sm text-slate-500">
-                {activeTab === 'account' && 'Manage your core business details, brand logo, and wallet endpoints.'}
-                {activeTab === 'security' && 'Update credentials, OTP codes, and configure Google Authenticator 2FA.'}
-                {activeTab === 'apikeys' && 'Manage secure API keys for authenticating payment requests.'}
-                {activeTab === 'webhooks' && 'Receive real-time payment notifications and manage customer redirects.'}
+                {activeTab === 'account' && (language === 'es' ? 'Administra los detalles de tu empresa, logotipo de marca y dirección de recepción.' : 'Manage your core business details, brand logo, and wallet endpoints.')}
+                {activeTab === 'security' && (language === 'es' ? 'Actualiza credenciales, códigos OTP y configura la autenticación 2FA.' : 'Update credentials, OTP codes, and configure Google Authenticator 2FA.')}
+                {activeTab === 'apikeys' && (language === 'es' ? 'Administra claves de API seguras para autenticar solicitudes de pago.' : 'Manage secure API keys for authenticating payment requests.')}
+                {activeTab === 'webhooks' && (language === 'es' ? 'Recibe notificaciones de pago en tiempo real y gestiona redirecciones.' : 'Receive real-time payment notifications and manage customer redirects.')}
               </p>
             </div>
             <div className="flex gap-2 shrink-0">
@@ -589,7 +585,7 @@ export default function SettingsPage() {
                   className="px-5 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 border border-indigo-100 text-indigo-700 font-bold text-[13px] transition flex items-center justify-center gap-2 shadow-sm"
                 >
                   <FileText size={16} strokeWidth={1.5} />
-                  Read API Docs
+                  {language === 'es' ? 'Leer Documentación' : 'Read API Docs'}
                 </Link>
               )}
               {activeTab === 'apikeys' && (
@@ -598,9 +594,12 @@ export default function SettingsPage() {
                   className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-[13px] transition flex items-center justify-center gap-2 shadow-md shadow-purple-100 shrink-0"
                 >
                   <Plus size={16} strokeWidth={1.5} />
-                  Generate New Key
+                  {language === 'es' ? 'Generar Nueva Clave' : 'Generate New Key'}
                 </button>
               )}
+            </div>
+          </div>
+        </div>   )}
             </div>
           </div>
         </div>

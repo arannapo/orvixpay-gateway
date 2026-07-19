@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { DollarSign, ChevronDown, Sparkles, CheckCircle2, Circle, HelpCircle } from 'lucide-react';
 import { LineChart, Line, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { useLanguage } from '@/context/LanguageContext';
 
 
 export default function DashboardPage() {
+  const { t, language } = useLanguage();
   const [stats, setStats] = useState({
     totalRevenue: 0,
     paidInvoices: 0,
@@ -185,12 +187,12 @@ export default function DashboardPage() {
       {(() => {
         const bnbBal = parseFloat(stats.systemWalletBalance || 0);
         const checks = profile ? [
-          { key: 'logo',     label: 'Business logo',           done: !!profile.logo,              href: '/dashboard/settings' },
-          { key: 'wallet',   label: 'Receiving wallet',        done: !!profile.merchantWallet,    href: '/dashboard/settings' },
-          { key: 'balance',  label: 'Fund system wallet',      done: bnbBal >= 0.01,              href: '/dashboard' },
-          { key: 'business', label: 'Business name',           done: !!profile.businessName,      href: '/dashboard/settings' },
-          { key: 'website',  label: 'Website URL',             done: !!profile.website,           href: '/dashboard/settings' },
-          { key: '2fa',      label: 'Two-factor auth',         done: !!profile.twoFactorEnabled,  href: '/dashboard/settings' },
+          { key: 'logo',     label: language === 'es' ? 'Logotipo de empresa' : 'Business logo',           done: !!profile.logo,              href: '/dashboard/settings' },
+          { key: 'wallet',   label: language === 'es' ? 'Billetera de liquidación' : 'Receiving wallet',        done: !!profile.merchantWallet,    href: '/dashboard/settings' },
+          { key: 'balance',  label: language === 'es' ? 'Fondear gas del sistema' : 'Fund system wallet',      done: bnbBal >= 0.01,              href: '/dashboard' },
+          { key: 'business', label: language === 'es' ? 'Nombre de la empresa' : 'Business name',           done: !!profile.businessName,      href: '/dashboard/settings' },
+          { key: 'website',  label: language === 'es' ? 'URL de sitio web' : 'Website URL',             done: !!profile.website,           href: '/dashboard/settings' },
+          { key: '2fa',      label: language === 'es' ? 'Autenticación 2FA' : 'Two-factor auth',         done: !!profile.twoFactorEnabled,  href: '/dashboard/settings' },
         ] : [];
 
         const completed = checks.filter(c => c.done).length;
@@ -210,12 +212,12 @@ export default function DashboardPage() {
             {/* ── Card 1: Account Setup ── */}
             {!allDone && profile && (() => {
               const checkInfos = [
-                { key: 'logo',     label: 'Business logo',           done: !!profile.logo,              href: '/dashboard/settings', tooltip: 'Upload your company logo to display on invoices. Set this in Settings under the Account tab.' },
-                { key: 'wallet',   label: 'Receiving wallet',        done: !!profile.merchantWallet,    href: '/dashboard/settings', tooltip: 'Specify your personal BEP20/BSC receiving address. Set this in Settings under the Account tab.' },
-                { key: 'balance',  label: 'Fund system wallet',      done: bnbBal >= 0.01,              href: '/dashboard', tooltip: 'Deposit BNB using the System Gas Wallet card shown on the dashboard.' },
-                { key: 'business', label: 'Business name',           done: !!profile.businessName,      href: '/dashboard/settings', tooltip: 'Enter your official business name for invoice branding. Set this in Settings under the Account tab.' },
-                { key: 'website',  label: 'Website URL',             done: !!profile.website,           href: '/dashboard/settings', tooltip: 'Provide your main website URL. Set this in Settings under the Account tab.' },
-                { key: '2fa',      label: 'Two-factor auth',         done: !!profile.twoFactorEnabled,  href: '/dashboard/settings', tooltip: 'Secure your logins with 2FA. Enable this in Settings under the Security tab.' },
+                { key: 'logo',     label: language === 'es' ? 'Logotipo de empresa' : 'Business logo',           done: !!profile.logo,              href: '/dashboard/settings', tooltip: language === 'es' ? 'Sube el logotipo de tu empresa para mostrarlo en las facturas. Configura esto en la pestaña Cuenta.' : 'Upload your company logo to display on invoices. Set this in Settings under the Account tab.' },
+                { key: 'wallet',   label: language === 'es' ? 'Billetera de liquidación' : 'Receiving wallet',        done: !!profile.merchantWallet,    href: '/dashboard/settings', tooltip: language === 'es' ? 'Especifica tu dirección personal de recepción BEP20/BSC. Configura esto en la pestaña Cuenta.' : 'Specify your personal BEP20/BSC receiving address. Set this in Settings under the Account tab.' },
+                { key: 'balance',  label: language === 'es' ? 'Fondear gas del sistema' : 'Fund system wallet',      done: bnbBal >= 0.01,              href: '/dashboard', tooltip: language === 'es' ? 'Deposita BNB usando la tarjeta de Billetera de Gas del Sistema que se muestra en el panel.' : 'Deposit BNB using the System Gas Wallet card shown on the dashboard.' },
+                { key: 'business', label: language === 'es' ? 'Nombre de la empresa' : 'Business name',           done: !!profile.businessName,      href: '/dashboard/settings', tooltip: language === 'es' ? 'Ingresa el nombre oficial de tu empresa para la personalización de facturas. Configura esto en la pestaña Cuenta.' : 'Enter your official business name for invoice branding. Set this in Settings under the Account tab.' },
+                { key: 'website',  label: language === 'es' ? 'URL de sitio web' : 'Website URL',             done: !!profile.website,           href: '/dashboard/settings', tooltip: language === 'es' ? 'Proporciona la URL principal de tu sitio web. Configura esto en la pestaña Cuenta.' : 'Provide your main website URL. Set this in Settings under the Account tab.' },
+                { key: '2fa',      label: language === 'es' ? 'Autenticación 2FA' : 'Two-factor auth',         done: !!profile.twoFactorEnabled,  href: '/dashboard/settings', tooltip: language === 'es' ? 'Protege tus inicios de sesión con 2FA. Activa esto en la pestaña Seguridad.' : 'Secure your logins with 2FA. Enable this in Settings under the Security tab.' },
               ];
 
               return (
@@ -227,13 +229,13 @@ export default function DashboardPage() {
                   <div className="flex items-center justify-between mb-2 z-10">
                     <div className="flex items-center gap-2">
                       <Sparkles size={16} className="text-violet-500" />
-                      <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider">Complete Your Profile</h3>
+                      <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider">{language === 'es' ? 'Completa tu Perfil' : 'Complete Your Profile'}</h3>
                     </div>
-                    <span className="text-xs font-bold bg-violet-50 text-violet-700 px-2.5 py-1 rounded-full">{pct}% Complete</span>
+                    <span className="text-xs font-bold bg-violet-50 text-violet-700 px-2.5 py-1 rounded-full">{pct}% {language === 'es' ? 'Completado' : 'Complete'}</span>
                   </div>
 
                   <p className="text-xs text-slate-500 font-medium mb-4 z-10">
-                    Configure your merchant profile details to begin processing live stablecoin transactions.
+                    {language === 'es' ? 'Configura los detalles de tu perfil comercial para comenzar a procesar transacciones.' : 'Configure your merchant profile details to begin processing live stablecoin transactions.'}
                   </p>
 
                   {/* Horizontal progress bar */}
@@ -296,11 +298,13 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 w-full">
                   <div className="flex-1 w-full text-center md:text-left">
-                    <h2 className="text-base font-semibold tracking-tight text-white mb-1">System Gas Wallet</h2>
-                    <p className="text-xs text-slate-400 max-w-xs leading-relaxed mb-3 mx-auto md:mx-0">Holds BNB for network fees when sweeping crypto payments.</p>
+                    <h2 className="text-base font-semibold tracking-tight text-white mb-1">{t('dashGasWallet')}</h2>
+                    <p className="text-xs text-slate-400 max-w-xs leading-relaxed mb-3 mx-auto md:mx-0">
+                      {language === 'es' ? 'Mantiene BNB para tarifas de red al transferir pagos criptográficos.' : 'Holds BNB for network fees when sweeping crypto payments.'}
+                    </p>
                     <div className="flex flex-col items-center md:items-start">
                       <div className="flex items-center gap-2 mb-1 justify-center md:justify-start">
-                        <span className="text-sm font-medium text-slate-300 tracking-wide">Available Gas</span>
+                        <span className="text-sm font-medium text-slate-300 tracking-wide">{language === 'es' ? 'Gas Disponible' : 'Available Gas'}</span>
                         <button onClick={fetchStats} className="p-1 hover:bg-[#333] rounded transition text-slate-400 hover:text-white" title="Refresh Balance">
                           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                         </button>
@@ -316,7 +320,7 @@ export default function DashboardPage() {
                       {bnbBal < minRecommended && (
                         <p className="text-[10px] text-rose-400 mt-2 font-medium flex items-center gap-1.5 justify-center md:justify-start">
                           <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
-                          Min {minRecommended} BNB required
+                          Min {minRecommended} BNB {language === 'es' ? 'requerido' : 'required'}
                         </p>
                       )}
                     </div>
@@ -326,7 +330,7 @@ export default function DashboardPage() {
                       <img src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${stats.systemWalletAddress}`} alt="QR Code" className="w-32 h-32 rounded-lg" />
                     </div>
                     <button onClick={handleCopy} className="w-full py-1.5 bg-white hover:bg-slate-100 text-black font-semibold text-xs rounded-xl transition shadow-md whitespace-nowrap px-3">
-                      {copied ? '✓ Copied!' : 'Copy Wallet'}
+                      {copied ? (language === 'es' ? '✓ ¡Copiado!' : '✓ Copied!') : (language === 'es' ? 'Copiar Billetera' : 'Copy Wallet')}
                     </button>
                   </div>
                 </div>
@@ -339,19 +343,19 @@ export default function DashboardPage() {
       {/* ── Stat Cards ── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-slate-50/40 p-6 rounded-2xl border border-slate-100 flex flex-col justify-center transition-all hover:bg-slate-50/70">
-          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Total Revenue</h3>
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t('dashRevenue')}</h3>
           <p className="text-3xl font-normal text-slate-900 tracking-tight">${stats.totalRevenue.toFixed(2)}</p>
         </div>
         <div className="bg-slate-50/40 p-6 rounded-2xl border border-slate-100 flex flex-col justify-center transition-all hover:bg-slate-50/70">
-          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Paid Invoices</h3>
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{language === 'es' ? 'Facturas Pagadas' : 'Paid Invoices'}</h3>
           <p className="text-3xl font-normal text-slate-900 tracking-tight">{stats.paidInvoices}</p>
         </div>
         <div className="bg-slate-50/40 p-6 rounded-2xl border border-slate-100 flex flex-col justify-center transition-all hover:bg-slate-50/70">
-          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Pending Invoices</h3>
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{language === 'es' ? 'Facturas Pendientes' : 'Pending Invoices'}</h3>
           <p className="text-3xl font-normal text-slate-900 tracking-tight">{stats.pendingInvoices}</p>
         </div>
         <div className="bg-slate-50/40 p-6 rounded-2xl border border-slate-100 flex flex-col justify-center transition-all hover:bg-slate-50/70">
-          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Active API Keys</h3>
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t('dashActiveKeys')}</h3>
           <p className="text-3xl font-normal text-slate-900 tracking-tight">{stats.apiRequests}</p>
         </div>
       </div>
@@ -363,8 +367,10 @@ export default function DashboardPage() {
           {/* Top Info Header */}
           <div className="px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 z-10">
             <div>
-              <h3 className="text-[1.4rem] font-semibold text-slate-900 tracking-tight mb-1">Revenue Overview</h3>
-              <p className="text-slate-500 font-medium text-sm">Track and analyze your crypto invoice payments across different timeframes.</p>
+              <h3 className="text-[1.4rem] font-semibold text-slate-900 tracking-tight mb-1">{language === 'es' ? 'Resumen de Ingresos' : 'Revenue Overview'}</h3>
+              <p className="text-slate-500 font-medium text-sm">
+                {language === 'es' ? 'Analiza y haz seguimiento a tus facturas cripto en diferentes plazos.' : 'Track and analyze your crypto invoice payments across different timeframes.'}
+              </p>
             </div>
             <div className="flex items-center gap-2 shrink-0 z-20">
               {/* Status Dropdown */}
@@ -378,10 +384,10 @@ export default function DashboardPage() {
                   className="px-4 py-2 border border-slate-200 bg-white rounded-xl focus:outline-none text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition cursor-pointer flex items-center gap-1.5"
                 >
                   <span>
-                    {chartStatus === 'All' && 'All Statuses'}
-                    {chartStatus === 'Paid' && 'Paid'}
-                    {chartStatus === 'Pending' && 'Pending'}
-                    {chartStatus === 'Expired' && 'Expired'}
+                    {chartStatus === 'All' && (language === 'es' ? 'Todos los Estados' : 'All Statuses')}
+                    {chartStatus === 'Paid' && (language === 'es' ? 'Pagado' : 'Paid')}
+                    {chartStatus === 'Pending' && (language === 'es' ? 'Pendiente' : 'Pending')}
+                    {chartStatus === 'Expired' && (language === 'es' ? 'Expirado' : 'Expired')}
                   </span>
                   <ChevronDown size={14} className={`text-slate-400 transition-transform duration-200 ${showStatusDropdown ? 'rotate-180' : ''}`} />
                 </button>
@@ -389,12 +395,12 @@ export default function DashboardPage() {
                 {showStatusDropdown && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setShowStatusDropdown(false)} />
-                    <div className="absolute right-0 mt-2 w-36 bg-white rounded-xl border border-slate-200 shadow-lg py-1.5 z-20 text-left animate-fadeIn">
+                    <div className="absolute right-0 mt-2 w-38 bg-white rounded-xl border border-slate-200 shadow-lg py-1.5 z-20 text-left animate-fadeIn">
                       {[
-                        { value: 'All', label: 'All Statuses' },
-                        { value: 'Paid', label: 'Paid' },
-                        { value: 'Pending', label: 'Pending' },
-                        { value: 'Expired', label: 'Expired' }
+                        { value: 'All', label: language === 'es' ? 'Todos los Estados' : 'All Statuses' },
+                        { value: 'Paid', label: language === 'es' ? 'Pagado' : 'Paid' },
+                        { value: 'Pending', label: language === 'es' ? 'Pendiente' : 'Pending' },
+                        { value: 'Expired', label: language === 'es' ? 'Expirado' : 'Expired' }
                       ].map((opt) => (
                         <button
                           key={opt.value}
@@ -424,10 +430,10 @@ export default function DashboardPage() {
                   className="px-4 py-2 border border-slate-200 bg-white rounded-xl focus:outline-none text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition cursor-pointer flex items-center gap-1.5"
                 >
                   <span>
-                    {chartFilter === 'yearly' && 'Yearly'}
-                    {chartFilter === 'monthly' && 'Monthly'}
-                    {chartFilter === 'weekly' && 'Weekly'}
-                    {chartFilter === '7days' && 'Last 7 Days'}
+                    {chartFilter === 'yearly' && (language === 'es' ? 'Anual' : 'Yearly')}
+                    {chartFilter === 'monthly' && (language === 'es' ? 'Mensual' : 'Monthly')}
+                    {chartFilter === 'weekly' && (language === 'es' ? 'Semanal' : 'Weekly')}
+                    {chartFilter === '7days' && (language === 'es' ? 'Últimos 7 Días' : 'Last 7 Days')}
                   </span>
                   <ChevronDown size={14} className={`text-slate-400 transition-transform duration-200 ${showChartDropdown ? 'rotate-180' : ''}`} />
                 </button>
@@ -437,10 +443,10 @@ export default function DashboardPage() {
                     <div className="fixed inset-0 z-10" onClick={() => setShowChartDropdown(false)} />
                     <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl border border-slate-200 shadow-lg py-1.5 z-20 text-left animate-fadeIn">
                       {[
-                        { value: 'yearly', label: 'Yearly' },
-                        { value: 'monthly', label: 'Monthly' },
-                        { value: 'weekly', label: 'Weekly' },
-                        { value: '7days', label: 'Last 7 Days' }
+                        { value: 'yearly', label: language === 'es' ? 'Anual' : 'Yearly' },
+                        { value: 'monthly', label: language === 'es' ? 'Mensual' : 'Monthly' },
+                        { value: 'weekly', label: language === 'es' ? 'Semanal' : 'Weekly' },
+                        { value: '7days', label: language === 'es' ? 'Últimos 7 Días' : 'Last 7 Days' }
                       ].map((opt) => (
                         <button
                           key={opt.value}
@@ -475,7 +481,7 @@ export default function DashboardPage() {
                 <Tooltip 
                   contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '8px 12px' }}
                   itemStyle={{ color: '#0f172a', fontWeight: '600', fontSize: '14px' }}
-                  formatter={(value) => [`$${value}`, 'Revenue']}
+                  formatter={(value) => [`$${value}`, language === 'es' ? 'Ingresos' : 'Revenue']}
                   labelStyle={{ color: '#64748b', fontSize: '12px', fontWeight: '500', marginBottom: '2px' }}
                   cursor={{ stroke: '#e2e8f0', strokeWidth: 2, strokeDasharray: '5 5' }}
                 />

@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ExternalLink, DollarSign, Download, SlidersHorizontal, X, RefreshCw, Link2 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 import toast from 'react-hot-toast';
 
 export default function InvoicesPage() {
+  const { t, language } = useLanguage();
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -29,7 +31,7 @@ export default function InvoicesPage() {
 
   const handleExportCSV = () => {
     if (sortedInvoices.length === 0) {
-      toast.error('No records to export');
+      toast.error(language === 'es' ? 'No hay registros para exportar' : 'No records to export');
       return;
     }
 
@@ -61,7 +63,7 @@ export default function InvoicesPage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    toast.success('Invoices exported successfully!');
+    toast.success(language === 'es' ? '¡Facturas exportadas con éxito!' : 'Invoices exported successfully!');
   };
 
   const fetchInvoices = async () => {
@@ -155,15 +157,18 @@ export default function InvoicesPage() {
       <div className="relative overflow-hidden p-6 md:p-8 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 bg-white">
         {/* Background mesh & grid */}
         <div className="absolute inset-0 bg-gradient-to-br from-white via-white to-fuchsia-100/60 pointer-events-none z-0"></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSA0MCAwIEwgMCAwIDAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLDAsMCwwLjA0KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-60 pointer-events-none z-0"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSg0MCAwIEwgMCAwIDAgNDApIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMCwwLDAsMC4wMikiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4n)] opacity-85 pointer-events-none z-0"></div>
         <div className="absolute -left-10 -top-10 w-48 h-48 bg-indigo-200/30 blur-[60px] rounded-full pointer-events-none z-0"></div>
         <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-purple-300/30 blur-[60px] rounded-full pointer-events-none z-0"></div>
 
         <div className="relative z-10">
-          <p className="text-slate-500 font-medium text-sm">Manage and track your generated crypto invoices.</p>
+          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight leading-none mb-1">{t('dashInvoices')}</h2>
+          <p className="text-slate-500 font-medium text-xs">
+            {language === 'es' ? 'Administra y haz seguimiento a tus facturas cripto generadas.' : 'Manage and track your generated crypto invoices.'}
+          </p>
         </div>
         <Link href="/dashboard/invoices/new" className="relative z-10 w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-600 text-white font-bold text-[13px] hover:bg-purple-700 transition flex items-center justify-center gap-2 shadow-md shadow-purple-100 shrink-0">
-          <DollarSign size={16} strokeWidth={1.5} /> Create Invoice
+          <DollarSign size={16} strokeWidth={1.5} /> {language === 'es' ? 'Crear Factura' : 'Create Invoice'}
         </Link>
       </div>
 
@@ -175,7 +180,7 @@ export default function InvoicesPage() {
           <div className="w-full sm:w-80 shrink-0">
             <input 
               type="text" 
-              placeholder="Search by Order ID, customer..." 
+              placeholder={language === 'es' ? 'Buscar por ID de Orden, cliente...' : 'Search by Order ID, customer...'} 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-0 focus:border-slate-200 text-slate-755 bg-white hover:bg-slate-50/50 transition shadow-sm text-sm"
@@ -192,10 +197,10 @@ export default function InvoicesPage() {
                 className={`w-full px-4 py-2.5 rounded-xl border text-sm font-semibold transition flex items-center justify-center gap-2 shadow-sm ${showFilters ? 'bg-slate-900 text-white border-slate-900' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}`}
               >
                 <SlidersHorizontal size={15} strokeWidth={showFilters ? 2.5 : 2} /> 
-                {showFilters ? 'Hide Filters' : 'Filters'}
+                {showFilters ? (language === 'es' ? 'Ocultar Filtros' : 'Hide Filters') : (language === 'es' ? 'Filtros' : 'Filters')}
               </button>
 
-              {/* Dropdown Card (rendered relative to parent on desktop, viewport centered on mobile) */}
+              {/* Dropdown Card */}
               {showFilters && (
                 <>
                   {/* Click overlay to close */}
@@ -203,7 +208,7 @@ export default function InvoicesPage() {
                   
                   <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-2.5rem)] max-w-md bg-white rounded-2xl border border-slate-200 shadow-xl p-5 z-20 space-y-4 text-left animate-fadeIn md:absolute md:top-auto md:left-auto md:right-0 md:transform-none md:w-96 md:mt-2">
                     <div className="flex justify-between items-center pb-2 border-b border-slate-50">
-                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Filter Records</h4>
+                      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{language === 'es' ? 'Filtrar Registros' : 'Filter Records'}</h4>
                       <button 
                         type="button" 
                         onClick={() => setShowFilters(false)}
@@ -217,16 +222,16 @@ export default function InvoicesPage() {
                     <div className="grid grid-cols-2 gap-3">
                       {/* Status Filter */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-bold text-slate-455 tracking-wider">Status</span>
+                        <span className="text-[10px] font-bold text-slate-455 tracking-wider">{language === 'es' ? 'Estado' : 'Status'}</span>
                         <select 
                           value={statusFilter}
                           onChange={(e) => setStatusFilter(e.target.value)}
                           className="w-full px-2 py-1.5 border border-slate-200 bg-white rounded-xl focus:outline-none text-xs font-semibold text-slate-700 shadow-sm"
                         >
-                          <option value="All">All Statuses</option>
-                          <option value="Pending">Pending</option>
-                          <option value="Paid">Paid</option>
-                          <option value="Expired">Expired</option>
+                          <option value="All">{language === 'es' ? 'Todos los Estados' : 'All Statuses'}</option>
+                          <option value="Pending">{t('dashStatusPending')}</option>
+                          <option value="Paid">{t('dashStatusPaid')}</option>
+                          <option value="Expired">{t('dashStatusExpired')}</option>
                         </select>
                       </div>
 
@@ -238,7 +243,7 @@ export default function InvoicesPage() {
                           onChange={(e) => setCoinFilter(e.target.value)}
                           className="w-full px-2 py-1.5 border border-slate-200 bg-white rounded-xl focus:outline-none text-xs font-semibold text-slate-700 shadow-sm"
                         >
-                          <option value="All">All Coins</option>
+                          <option value="All">{language === 'es' ? 'Todos los Tokens' : 'All Coins'}</option>
                           <option value="USDT">USDT</option>
                           <option value="USDC">USDC</option>
                         </select>
@@ -249,47 +254,47 @@ export default function InvoicesPage() {
                     <div className="grid grid-cols-2 gap-3">
                       {/* Date Filter */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-bold text-slate-455 tracking-wider">Date</span>
+                        <span className="text-[10px] font-bold text-slate-455 tracking-wider">{language === 'es' ? 'Fecha' : 'Date'}</span>
                         <select 
                           value={dateFilter}
                           onChange={(e) => setDateFilter(e.target.value)}
                           className="w-full px-2 py-1.5 border border-slate-200 bg-white rounded-xl focus:outline-none text-xs font-semibold text-slate-700 shadow-sm"
                         >
-                          <option value="All">All Time</option>
-                          <option value="today">Today</option>
-                          <option value="7days">Last 7 Days</option>
-                          <option value="30days">Last 30 Days</option>
+                          <option value="All">{language === 'es' ? 'Todo el tiempo' : 'All Time'}</option>
+                          <option value="today">{language === 'es' ? 'Hoy' : 'Today'}</option>
+                          <option value="7days">{language === 'es' ? 'Últimos 7 Días' : 'Last 7 Days'}</option>
+                          <option value="30days">{language === 'es' ? 'Últimos 30 Días' : 'Last 30 Days'}</option>
                         </select>
                       </div>
 
                       {/* Amount Filter */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-bold text-slate-455 tracking-wider">Amount</span>
+                        <span className="text-[10px] font-bold text-slate-455 tracking-wider">{language === 'es' ? 'Monto' : 'Amount'}</span>
                         <select 
                           value={amountFilter}
                           onChange={(e) => setAmountFilter(e.target.value)}
                           className="w-full px-2 py-1.5 border border-slate-200 bg-white rounded-xl focus:outline-none text-xs font-semibold text-slate-700 shadow-sm"
                         >
-                          <option value="All">All Amounts</option>
-                          <option value="under100">Under $100</option>
+                          <option value="All">{language === 'es' ? 'Todos los Montos' : 'All Amounts'}</option>
+                          <option value="under100">{language === 'es' ? 'Menos de $100' : 'Under $100'}</option>
                           <option value="100to1000">$100 - $1,000</option>
-                          <option value="over1000">Over $1,000</option>
+                          <option value="over1000">{language === 'es' ? 'Más de $1,000' : 'Over $1,000'}</option>
                         </select>
                       </div>
                     </div>
 
                     {/* Sort By */}
                     <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-bold text-slate-455 tracking-wider">Sort By</span>
+                      <span className="text-[10px] font-bold text-slate-455 tracking-wider">{language === 'es' ? 'Ordenar Por' : 'Sort By'}</span>
                       <select 
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
                         className="w-full px-2.5 py-1.5 border border-slate-200 bg-white rounded-xl focus:outline-none text-xs font-semibold text-slate-700 shadow-sm"
                       >
-                        <option value="newest">Newest First</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="amount_desc">Amount: High-Low</option>
-                        <option value="amount_asc">Amount: Low-High</option>
+                        <option value="newest">{language === 'es' ? 'Más Recientes' : 'Newest First'}</option>
+                        <option value="oldest">{language === 'es' ? 'Más Antiguos' : 'Oldest First'}</option>
+                        <option value="amount_desc">{language === 'es' ? 'Monto: Mayor-Menor' : 'Amount: High-Low'}</option>
+                        <option value="amount_asc">{language === 'es' ? 'Monto: Menor-Mayor' : 'Amount: Low-High'}</option>
                       </select>
                     </div>
 
@@ -306,7 +311,7 @@ export default function InvoicesPage() {
                         }}
                         className="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold transition shadow-sm bg-white"
                       >
-                        Reset Filters
+                        {language === 'es' ? 'Restablecer Filtros' : 'Reset Filters'}
                       </button>
                     </div>
                   </div>
@@ -316,21 +321,21 @@ export default function InvoicesPage() {
 
             <button 
               onClick={() => {
-                const toastId = toast.loading('Refreshing invoices...');
-                fetchInvoices().then(() => toast.success('Data refreshed!', { id: toastId }));
+                const toastId = toast.loading(language === 'es' ? 'Actualizando facturas...' : 'Refreshing invoices...');
+                fetchInvoices().then(() => toast.success(language === 'es' ? '¡Datos actualizados!' : 'Data refreshed!', { id: toastId }));
               }}
               className="flex-1 sm:flex-initial px-4 py-2.5 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-sm font-semibold rounded-xl transition shadow-sm flex items-center justify-center gap-1.5 shrink-0"
               title="Refresh Data"
             >
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-              <span>Refresh</span>
+              <span>{language === 'es' ? 'Actualizar' : 'Refresh'}</span>
             </button>
 
             <button 
               onClick={handleExportCSV}
               className="flex-1 sm:flex-initial px-4 py-2.5 bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100/70 hover:text-emerald-800 text-sm font-bold rounded-xl transition shadow-sm flex items-center justify-center gap-1.5 shrink-0"
             >
-              <Download size={14} strokeWidth={2} className="text-emerald-600" /> Export CSV
+              <Download size={14} strokeWidth={2} className="text-emerald-600" /> {language === 'es' ? 'Exportar CSV' : 'Export CSV'}
             </button>
           </div>
         </div>
@@ -344,8 +349,8 @@ export default function InvoicesPage() {
         </div>
       ) : sortedInvoices.length === 0 ? (
         <div className="p-8 text-center text-slate-500 py-16">
-          <p className="mb-2 font-semibold">No invoices found matching criteria.</p>
-          <p className="text-sm">Try modifying your search query or filter options.</p>
+          <p className="mb-2 font-semibold">{language === 'es' ? 'No se encontraron facturas que coincidan con los criterios.' : 'No invoices found matching criteria.'}</p>
+          <p className="text-sm">{language === 'es' ? 'Intente modificar su consulta de búsqueda o las opciones de filtro.' : 'Try modifying your search query or filter options.'}</p>
         </div>
       ) : (
         <>
@@ -355,16 +360,16 @@ export default function InvoicesPage() {
               <div key={inv._id} className="p-5 space-y-3 bg-white hover:bg-slate-50/50 transition">
                 {/* Row 1: Order ID & Status Badge */}
                 <div className="flex justify-between items-center gap-2">
-                  <span className="font-bold text-slate-800 text-[13.5px]">Order: {inv.orderId}</span>
+                  <span className="font-bold text-slate-800 text-[13.5px]">{language === 'es' ? 'Orden' : 'Order'}: {inv.orderId}</span>
                   <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${getStatusColor(inv.status)}`}>
-                    {inv.status}
+                    {inv.status === 'Paid' ? t('dashStatusPaid') : inv.status === 'Pending' ? t('dashStatusPending') : inv.status === 'Expired' ? t('dashStatusExpired') : inv.status}
                   </span>
                 </div>
                 
                 {/* Row 2: Customer Details */}
                 {(inv.customerName || inv.customerEmail) && (
                   <div className="text-xs text-slate-500 font-medium space-y-0.5">
-                    {inv.customerName && <p className="text-slate-700">Customer: {inv.customerName}</p>}
+                    {inv.customerName && <p className="text-slate-700">{language === 'es' ? 'Cliente' : 'Customer'}: {inv.customerName}</p>}
                     {inv.customerEmail && <p className="text-slate-400 font-mono text-[11px]">{inv.customerEmail}</p>}
                   </div>
                 )}
@@ -378,7 +383,7 @@ export default function InvoicesPage() {
                     </p>
                   </div>
                    <div className="text-right">
-                    <span className="text-[10px] font-semibold text-slate-400 block mb-0.5">Amount</span>
+                    <span className="text-[10px] font-semibold text-slate-400 block mb-0.5">{language === 'es' ? 'Monto' : 'Amount'}</span>
                     <div className="flex flex-col items-end gap-1">
                       <span className="text-[13px] font-bold text-slate-900 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-150">
                         {inv.amount} {inv.coin}
@@ -393,9 +398,9 @@ export default function InvoicesPage() {
                   <a 
                     href={`/invoice/${inv._id}`} 
                     target="_blank" 
-                    className="flex-1 justify-center inline-flex items-center gap-1.5 text-slate-650 hover:text-slate-900 font-bold bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl transition text-xs shadow-sm border border-slate-200/40"
+                    className="flex-1 justify-center inline-flex items-center gap-1.5 text-slate-655 hover:text-slate-900 font-bold bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl transition text-xs shadow-sm border border-slate-200/40"
                   >
-                    View Invoice <ExternalLink size={13} />
+                    {language === 'es' ? 'Ver Factura' : 'View Invoice'} <ExternalLink size={13} />
                   </a>
                   {inv.transactionHash && (
                     <a 
@@ -404,7 +409,7 @@ export default function InvoicesPage() {
                       rel="noopener noreferrer"
                       className="flex-1 justify-center inline-flex items-center gap-1.5 text-emerald-700 hover:text-emerald-900 font-bold bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-xl transition text-xs shadow-sm border border-emerald-200/40"
                     >
-                      Sweep Link <Link2 size={13} />
+                      {language === 'es' ? 'Enlace Sweep' : 'Sweep Link'} <Link2 size={13} />
                     </a>
                   )}
                   {inv.overpaidDetails?.refundTxHash && (
@@ -414,7 +419,7 @@ export default function InvoicesPage() {
                       rel="noopener noreferrer"
                       className="flex-1 justify-center inline-flex items-center gap-1.5 text-purple-700 hover:text-purple-900 font-bold bg-purple-50 hover:bg-purple-100 px-4 py-2 rounded-xl transition text-xs shadow-sm border border-purple-200/40"
                     >
-                      Refund Link <Link2 size={13} />
+                      {language === 'es' ? 'Enlace Reembolso' : 'Refund Link'} <Link2 size={13} />
                     </a>
                   )}
                 </div>
@@ -422,17 +427,17 @@ export default function InvoicesPage() {
             ))}
           </div>
 
-          {/* Desktop Table View (Visible on Desktop Only) */}
+          {/* Desktop Table View */}
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left text-sm text-slate-650">
               <thead className="bg-white text-xs font-semibold text-slate-400 border-b border-slate-100">
                 <tr>
-                  <th className="px-5 md:px-8 py-4 md:py-5">Details</th>
-                  <th className="px-5 md:px-8 py-4 md:py-5">Amount</th>
+                  <th className="px-5 md:px-8 py-4 md:py-5">{language === 'es' ? 'Detalles' : 'Details'}</th>
+                  <th className="px-5 md:px-8 py-4 md:py-5">{language === 'es' ? 'Monto' : 'Amount'}</th>
                   <th className="px-5 md:px-8 py-4 md:py-5">Token</th>
-                  <th className="px-5 md:px-8 py-4 md:py-5">Status</th>
-                  <th className="px-5 md:px-8 py-4 md:py-5">Date</th>
-                  <th className="px-5 md:px-8 py-4 md:py-5 text-right">Action</th>
+                  <th className="px-5 md:px-8 py-4 md:py-5">{language === 'es' ? 'Estado' : 'Status'}</th>
+                  <th className="px-5 md:px-8 py-4 md:py-5">{language === 'es' ? 'Fecha' : 'Date'}</th>
+                  <th className="px-5 md:px-8 py-4 md:py-5 text-right">{language === 'es' ? 'Acción' : 'Action'}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -440,10 +445,10 @@ export default function InvoicesPage() {
                   <tr key={inv._id} className="hover:bg-slate-50/50 transition">
                     <td className="px-5 md:px-8 py-4 md:py-5 font-medium text-slate-800 whitespace-nowrap">
                       <div className="flex flex-col gap-0.5">
-                        <span className="font-bold text-slate-800 text-[13.5px]">Order: {inv.orderId}</span>
+                        <span className="font-bold text-slate-800 text-[13.5px]">{language === 'es' ? 'Orden' : 'Order'}: {inv.orderId}</span>
                         {(inv.customerName || inv.customerEmail) && (
                           <span className="text-[11px] text-slate-500 font-medium">
-                            {inv.customerName || 'No Name'} {inv.customerEmail ? `(${inv.customerEmail})` : ''}
+                            {inv.customerName || (language === 'es' ? 'Sin Nombre' : 'No Name')} {inv.customerEmail ? `(${inv.customerEmail})` : ''}
                           </span>
                         )}
                         <span className="text-[9.5px] text-slate-400 font-mono">Invoice ID: {inv._id}</span>
@@ -458,7 +463,7 @@ export default function InvoicesPage() {
                     </td>
                     <td className="px-5 md:px-8 py-4 md:py-5 whitespace-nowrap">
                       <span className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${getStatusColor(inv.status)}`}>
-                        {inv.status}
+                        {inv.status === 'Paid' ? t('dashStatusPaid') : inv.status === 'Pending' ? t('dashStatusPending') : inv.status === 'Expired' ? t('dashStatusExpired') : inv.status}
                       </span>
                     </td>
                     <td className="px-5 md:px-8 py-4 md:py-5 font-medium text-slate-555 whitespace-nowrap">
@@ -479,7 +484,7 @@ export default function InvoicesPage() {
                             className="inline-flex items-center gap-1 text-emerald-600 hover:text-emerald-800 font-bold bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-full transition text-xs border border-emerald-100"
                             title="View Sweep Transaction on BscScan"
                           >
-                            Sweep Link <Link2 size={12} />
+                            {language === 'es' ? 'Enlace Sweep' : 'Sweep Link'} <Link2 size={12} />
                           </a>
                         )}
                         {inv.overpaidDetails?.refundTxHash && (
@@ -490,11 +495,11 @@ export default function InvoicesPage() {
                             className="inline-flex items-center gap-1 text-purple-600 hover:text-purple-800 font-bold bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-full transition text-xs border border-purple-100"
                             title="View Refund Transaction on BscScan"
                           >
-                            Refund Link <Link2 size={12} />
+                            {language === 'es' ? 'Enlace Reembolso' : 'Refund Link'} <Link2 size={12} />
                           </a>
                         )}
-                        <a href={`/invoice/${inv._id}`} target="_blank" className="inline-flex items-center gap-1 text-slate-650 hover:text-slate-900 font-semibold bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition">
-                          View <ExternalLink size={14} />
+                        <a href={`/invoice/${inv._id}`} target="_blank" className="inline-flex items-center gap-1 text-slate-655 hover:text-slate-900 font-semibold bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition text-xs border border-slate-200/40">
+                          {language === 'es' ? 'Ver' : 'View'} <ExternalLink size={14} />
                         </a>
                       </div>
                     </td>
@@ -512,7 +517,7 @@ export default function InvoicesPage() {
                 onClick={() => setVisibleLimit((prev) => prev + 20)}
                 className="px-6 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl shadow-sm transition"
               >
-                Show More
+                {language === 'es' ? 'Mostrar Más' : 'Show More'}
               </button>
             </div>
           )}
