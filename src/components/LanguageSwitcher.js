@@ -1,7 +1,6 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
-import { Globe } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 export default function LanguageSwitcher({ light = false }) {
@@ -25,39 +24,45 @@ export default function LanguageSwitcher({ light = false }) {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition shadow-sm ${
+        className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition shadow-sm ${
           light
             ? "bg-slate-900 border-slate-800 text-slate-300 hover:text-white"
             : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
         }`}
       >
-        <Globe size={13} />
+        <img 
+          src={language === "en" ? "/flags/us.png" : "/flags/es.png"} 
+          alt="" 
+          className="w-4 h-4 rounded-full object-cover border border-slate-200/50 shadow-sm shrink-0" 
+        />
         <span>{language === "en" ? "EN" : "ES"}</span>
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-28 bg-white border border-slate-200/80 rounded-xl shadow-lg z-50 py-1 overflow-hidden animate-fade-in">
+        <div className="absolute right-0 mt-2 w-32 bg-white border border-slate-200/80 rounded-xl shadow-lg z-50 py-1.5 overflow-hidden animate-fade-in">
           <button
             onClick={() => {
               setLanguage("en");
               setIsOpen(false);
             }}
-            className={`w-full text-left px-4 py-2 text-xs font-semibold transition ${
+            className={`w-full flex items-center gap-2 text-left px-3.5 py-2.5 text-xs font-semibold transition ${
               language === "en" ? "bg-slate-100 text-slate-900 font-bold" : "text-slate-650 hover:bg-slate-50"
             }`}
           >
-            English
+            <img src="/flags/us.png" alt="" className="w-4 h-4 rounded-full object-cover border border-slate-100 shadow-sm shrink-0" />
+            <span>English</span>
           </button>
           <button
             onClick={() => {
               setLanguage("es");
               setIsOpen(false);
             }}
-            className={`w-full text-left px-4 py-2 text-xs font-semibold transition ${
+            className={`w-full flex items-center gap-2 text-left px-3.5 py-2.5 text-xs font-semibold transition ${
               language === "es" ? "bg-slate-100 text-slate-900 font-bold" : "text-slate-650 hover:bg-slate-50"
             }`}
           >
-            Español
+            <img src="/flags/es.png" alt="" className="w-4 h-4 rounded-full object-cover border border-slate-100 shadow-sm shrink-0" />
+            <span>Español</span>
           </button>
         </div>
       )}
