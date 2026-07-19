@@ -515,7 +515,13 @@ export default function SettingsPage() {
               <div className="h-12 bg-slate-200/60 rounded-xl w-full"></div>
               <div className="h-3 bg-slate-200/60 rounded w-72"></div>
             </div>
-   const tabs = [
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const tabs = [
     { id: 'account', label: language === 'es' ? 'Cuenta' : 'Account', icon: User },
     { id: 'security', label: language === 'es' ? 'Seguridad' : 'Security', icon: Lock },
     { id: 'apikeys', label: language === 'es' ? 'Claves API' : 'API Keys', icon: Key },
@@ -597,9 +603,6 @@ export default function SettingsPage() {
                   {language === 'es' ? 'Generar Nueva Clave' : 'Generate New Key'}
                 </button>
               )}
-            </div>
-          </div>
-        </div>   )}
             </div>
           </div>
         </div>
