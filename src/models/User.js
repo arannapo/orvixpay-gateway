@@ -25,6 +25,8 @@ const UserSchema = new mongoose.Schema({
   twoFactorSecret: { type: String },
   emailOtp: { type: String },
   emailOtpExpires: { type: Date },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
   isEmailVerified: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
