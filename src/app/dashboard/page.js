@@ -183,6 +183,36 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 pb-10">
+      {/* Alert Banner if BNB is low */}
+      {bnbBalance < minRecommended && (
+        <div className="bg-rose-50 border border-rose-200/60 rounded-3xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-rose-100/30 rounded-full blur-2xl pointer-events-none" />
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-2xl bg-rose-100 flex items-center justify-center text-rose-600 shrink-0 shadow-sm mt-0.5">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div className="space-y-1">
+              <h4 className="text-sm font-extrabold text-rose-800 uppercase tracking-wider">{language === 'es' ? 'Alerta de Gas del Sistema' : 'System Gas Alert'}</h4>
+              <p className="text-xs text-rose-700 font-semibold leading-relaxed">
+                {language === 'es' 
+                  ? `La billetera de gas del sistema tiene saldo bajo (${bnbBalance.toFixed(6)} BNB). Las transferencias automáticas podrían fallar. Deposite al menos ${minRecommended} BNB.` 
+                  : `System gas wallet has a low balance (${bnbBalance.toFixed(6)} BNB). Automatic payment sweeps might fail. Please deposit at least ${minRecommended} BNB.`}
+              </p>
+            </div>
+          </div>
+          {stats.systemWalletAddress && (
+            <button 
+              onClick={handleCopy}
+              className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-2xl transition shadow-sm whitespace-nowrap"
+            >
+              {copied ? (language === 'es' ? '✓ ¡Copiado!' : '✓ Copied!') : (language === 'es' ? 'Copiar Dirección' : 'Copy Gas Address')}
+            </button>
+          )}
+        </div>
+      )}
+
       {/* ── Top 3-column grid ── */}
       {(() => {
         const bnbBal = parseFloat(stats.systemWalletBalance || 0);

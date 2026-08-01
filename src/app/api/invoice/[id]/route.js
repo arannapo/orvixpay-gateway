@@ -36,7 +36,7 @@ export async function GET(req, { params }) {
     // Real-time blockchain payment verification
     if (['Pending', 'Processing', 'Partially Paid', 'Overpaid', 'Gas Funding'].includes(invoice.status)) {
       try {
-        const provider = new ethers.JsonRpcProvider('https://bsc-rpc.publicnode.com');
+        const provider = new ethers.JsonRpcProvider('https://bsc-dataseed.binance.org/');
         const tokenAddress = (invoice.coin === 'USDC' ? BEP20_USDC : BEP20_USDT).toLowerCase();
         const tokenContract = new ethers.Contract(tokenAddress, minABI, provider);
         
@@ -101,7 +101,7 @@ export async function GET(req, { params }) {
           }
 
           // 4. GAS FUNDING & SWEEP INITIATION (For Exact or Overpaid payments)
-          if (coinBalance >= targetAmount && ['Processing', 'Overpaid', 'Partially Paid'].includes(invoice.status)) {
+          if (coinBalance >= targetAmount && ['Processing', 'Overpaid', 'Partially Paid', 'Gas Funding'].includes(invoice.status)) {
             const merchant = invoice.merchantId;
             if (merchant && merchant.systemWalletPrivateKey && merchant.merchantWallet) {
               const systemWallet = new ethers.Wallet(merchant.systemWalletPrivateKey, provider);
@@ -109,18 +109,28 @@ export async function GET(req, { params }) {
 
               // Update state to Gas Funding
               const priorStatus = invoice.status;
-              invoice.status = 'Gas Funding';
-              await invoice.save();
-              await triggerWebhook(invoice);
+              if (invoice.status !== 'Gas Funding') {
+                invoice.status = 'Gas Funding';
+                await invoice.save();
+                await triggerWebhook(invoice);
+              }
 
               // Determine if we need to refund an overpayment dynamically based on balance
               const isOverpaid = coinBalance > (targetAmount + 0.001);
 
               // Step A: Send BNB gas to temporary wallet to execute token transfers
               const gasValue = isOverpaid ? "0.0025" : "0.0015";
+
+              // Check if system wallet has enough BNB gas balance first
+              const systemBnbBalance = await provider.getBalance(systemWallet.address);
+              const requiredGasWei = ethers.parseEther(gasValue);
+              if (systemBnbBalance < requiredGasWei) {
+                throw new Error(`Insufficient BNB in system gas wallet (${systemWallet.address}). Balance: ${ethers.formatEther(systemBnbBalance)} BNB, Required: ${gasValue} BNB.`);
+              }
+
               const gasTx = await systemWallet.sendTransaction({
                 to: tempWallet.address.toLowerCase(),
-                value: ethers.parseEther(gasValue)
+                value: requiredGasWei
               });
               await gasTx.wait();
 

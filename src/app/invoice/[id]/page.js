@@ -6,6 +6,17 @@ import toast from 'react-hot-toast';
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
+const statusTranslationKeys = {
+  'Pending': 'dashStatusPending',
+  'Processing': 'dashStatusProcessing',
+  'Partially Paid': 'dashStatusPartial',
+  'Overpaid': 'dashStatusOverpaid',
+  'Gas Funding': 'dashStatusGas',
+  'Paid': 'dashStatusPaid',
+  'Expired': 'dashStatusExpired',
+  'Cancelled': 'dashStatusCancelled'
+};
+
 export default function InvoicePage({ params }) {
   const { t, language } = useLanguage();
   const unwrappedParams = use(params);
@@ -19,7 +30,7 @@ export default function InvoicePage({ params }) {
   useEffect(() => {
     if (!invoice || !invoice.expiresAt) return;
     
-    if (invoice.status !== 'Pending') {
+    if (invoice.status !== 'Pending' && invoice.status !== 'Partially Paid') {
       setTimeLeft(null);
       return;
     }
@@ -39,7 +50,7 @@ export default function InvoicePage({ params }) {
       } else {
         setTimeLeft('00:00');
         setProgress(0);
-        if (invoice.status === 'Pending') {
+        if (invoice.status === 'Pending' || invoice.status === 'Partially Paid') {
           setInvoice(prev => ({ ...prev, status: 'Expired' }));
         }
       }
@@ -195,13 +206,17 @@ export default function InvoicePage({ params }) {
               <div className="text-right flex flex-col items-end shrink-0">
                 <span className={`inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm border ${
                   invoice.status === 'Pending' ? 'bg-amber-50 text-amber-700 border-amber-200/40' :
+                  invoice.status === 'Processing' ? 'bg-blue-50 text-blue-700 border-blue-200/40' :
+                  invoice.status === 'Partially Paid' ? 'bg-amber-50 text-amber-700 border-amber-200/40' :
+                  invoice.status === 'Overpaid' ? 'bg-purple-50 text-purple-700 border-purple-200/40' :
+                  invoice.status === 'Gas Funding' ? 'bg-indigo-50 text-indigo-700 border-indigo-200/40' :
                   invoice.status === 'Paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/40' :
-                  invoice.status === 'Expired' ? 'bg-rose-50 text-rose-700 border-rose-200/40' :
+                  invoice.status === 'Expired' || invoice.status === 'Failed' ? 'bg-rose-50 text-rose-700 border-rose-200/40' :
                   'bg-slate-50 text-slate-700 border-slate-200/40'
                 }`}>
-                  {invoice.status}
+                  {t(statusTranslationKeys[invoice.status]) || invoice.status}
                 </span>
-                {timeLeft && invoice.status === 'Pending' && (
+                {timeLeft && (invoice.status === 'Pending' || invoice.status === 'Partially Paid') && (
                   <div className="mt-2.5 flex items-center gap-1 text-[11px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-100/80 shadow-sm animate-pulse">
                     <Clock size={11} strokeWidth={2.5} />
                     <span>{timeLeft}</span>
@@ -210,7 +225,7 @@ export default function InvoicePage({ params }) {
               </div>
             </div>
 
-            {timeLeft && invoice.status === 'Pending' && (
+            {timeLeft && (invoice.status === 'Pending' || invoice.status === 'Partially Paid') && (
               <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden shrink-0 mb-6 mt-3">
                 <div 
                   className="h-full bg-gradient-to-r from-rose-500 to-amber-500 rounded-full transition-all duration-1000 ease-linear relative"
@@ -351,6 +366,12 @@ export default function InvoicePage({ params }) {
                 <p className="text-slate-800 text-[13.5px] font-bold">{language === 'es' ? 'Esperando por su pago...' : 'Waiting for your payment...'}</p>
                 <p className="text-slate-400 text-xs font-semibold">{language === 'es' ? 'Por favor envíe la cantidad exacta a la dirección de arriba.' : 'Please send the exact amount to the address above.'}</p>
               </div>
+            ) : invoice.status === 'Processing' ? (
+              <div className="flex flex-col items-center gap-1.5">
+                <RefreshCw size={18} className="animate-spin text-blue-600 mb-1" />
+                <p className="text-blue-700 text-[13.5px] font-bold">{language === 'es' ? 'Procesando pago...' : 'Processing payment...'}</p>
+                <p className="text-slate-400 text-xs font-semibold">{language === 'es' ? 'Pago detectado. Confirmando en la cadena de bloques.' : 'Payment detected. Confirming on-chain.'}</p>
+              </div>
             ) : invoice.status === 'Partially Paid' ? (
               <div className="flex flex-col items-center gap-1.5">
                 <RefreshCw size={18} className="animate-spin text-amber-500 mb-1" />
@@ -361,6 +382,18 @@ export default function InvoicePage({ params }) {
                     : `Please send the remaining ${(invoice.usdtAmount - (invoice.receivedAmount || 0)).toFixed(2)} ${invoice.coin} to the same address.`}
                 </p>
               </div>
+            ) : invoice.status === 'Overpaid' ? (
+              <div className="flex flex-col items-center gap-1.5">
+                <RefreshCw size={18} className="animate-spin text-purple-600 mb-1" />
+                <p className="text-purple-700 text-[13.5px] font-bold">{language === 'es' ? 'Pago en Exceso Detectado' : 'Overpayment Detected'}</p>
+                <p className="text-slate-400 text-xs font-semibold">{language === 'es' ? 'Procesando pago y reembolsando el monto excedente.' : 'Processing payment and refunding the excess amount.'}</p>
+              </div>
+            ) : invoice.status === 'Gas Funding' ? (
+              <div className="flex flex-col items-center gap-1.5">
+                <RefreshCw size={18} className="animate-spin text-indigo-600 mb-1" />
+                <p className="text-indigo-700 text-[13.5px] font-bold">{language === 'es' ? 'Fondeo de Gas / Finalizando...' : 'Gas Funding / Finalizing...'}</p>
+                <p className="text-slate-400 text-xs font-semibold">{language === 'es' ? 'Transfiriendo fondos a la billetera principal del comercio.' : 'Transferring funds to the merchant\'s main wallet.'}</p>
+              </div>
             ) : invoice.status === 'Paid' ? (
               <div className="flex flex-col items-center gap-1.5">
                 <div className="w-11 h-11 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-1 text-emerald-600 shadow-sm">
@@ -368,6 +401,30 @@ export default function InvoicePage({ params }) {
                 </div>
                 <p className="text-emerald-700 text-sm font-bold">{t('checkoutPaySuccess')}</p>
                 <p className="text-slate-400 text-xs font-medium">{language === 'es' ? 'Los fondos han sido acreditados. Puede cerrar esta pestaña.' : 'Funds have been credited. You may close this tab.'}</p>
+              </div>
+            ) : invoice.status === 'Refunded' ? (
+              <div className="flex flex-col items-center gap-1.5">
+                <div className="w-11 h-11 rounded-full bg-violet-50 border border-violet-100 flex items-center justify-center mb-1 text-violet-600 shadow-sm">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+                </div>
+                <p className="text-violet-700 text-sm font-bold">{language === 'es' ? 'Factura Reembolsada' : 'Invoice Refunded'}</p>
+                <p className="text-slate-400 text-xs font-medium">{language === 'es' ? 'Esta factura ha sido reembolsada en su totalidad.' : 'This invoice has been refunded in full.'}</p>
+              </div>
+            ) : invoice.status === 'Cancelled' ? (
+              <div className="flex flex-col items-center gap-1.5">
+                <div className="w-11 h-11 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-1 text-slate-500 shadow-sm">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M18.36 18.36A9 9 0 015.64 5.64m12.72 12.72A9 9 0 005.64 5.64m12.72 12.72L5.64 5.64" /></svg>
+                </div>
+                <p className="text-slate-700 text-sm font-bold">{language === 'es' ? 'Factura Cancelada' : 'Invoice Cancelled'}</p>
+                <p className="text-slate-400 text-xs font-medium">{language === 'es' ? 'Esta solicitud de pago ha sido cancelada.' : 'This payment request has been cancelled.'}</p>
+              </div>
+            ) : invoice.status === 'Failed' ? (
+              <div className="flex flex-col items-center gap-1.5">
+                <div className="w-11 h-11 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center mb-1 text-rose-600 shadow-sm">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                </div>
+                <p className="text-rose-700 text-sm font-bold">{language === 'es' ? 'Pago Fallido' : 'Payment Failed'}</p>
+                <p className="text-slate-400 text-xs font-medium">{language === 'es' ? 'La transacción falló o no pudo ser procesada.' : 'The transaction failed or could not be processed.'}</p>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-1.5">
