@@ -20,7 +20,7 @@ export async function GET(req, { params }) {
     await dbConnect();
     const { id } = await params;
 
-    let invoice = await Invoice.findById(id).populate('merchantId', 'businessName logo website webhookUrl webhookHeaders systemWalletAddress systemWalletPrivateKey merchantWallet');
+    let invoice = await Invoice.findById(id).populate('merchantId', 'businessName logo website webhookUrl webhookHeaders systemWalletAddress systemWalletPrivateKey merchantWallet invoiceDesign');
     if (!invoice) {
       return NextResponse.json({ success: false, error: 'Invoice not found' }, { status: 404 });
     }

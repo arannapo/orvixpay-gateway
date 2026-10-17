@@ -29,6 +29,7 @@ const InvoiceSchema = new mongoose.Schema({
   paidAt: { type: Date },
   transactionHash: { type: String },
   metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
+  design: { type: mongoose.Schema.Types.Mixed, default: {} },
 });
 
 delete mongoose.models.Invoice;

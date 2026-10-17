@@ -31,7 +31,7 @@ export async function PUT(req) {
     const decoded = jwt.verify(token, secret);
     
     const body = await req.json();
-    const { webhookUrl, webhookHeaders, successUrl, cancelUrl, merchantWallet, logo, password, businessName, website, email, twoFactorEnabled, twoFactorSecret, code } = body;
+    const { webhookUrl, webhookHeaders, successUrl, cancelUrl, merchantWallet, logo, password, businessName, website, email, twoFactorEnabled, twoFactorSecret, code, invoiceDesign } = body;
 
     const user = await User.findById(decoded.userId);
     if (!user) return NextResponse.json({ success: false, error: 'User not found' }, { status: 404 });
@@ -76,6 +76,7 @@ export async function PUT(req) {
     if (typeof logo !== 'undefined') updateData.logo = logo;
     if (typeof businessName !== 'undefined') updateData.businessName = businessName;
     if (typeof website !== 'undefined') updateData.website = website;
+    if (typeof invoiceDesign !== 'undefined') updateData.invoiceDesign = invoiceDesign;
 
     if (email && email.trim() !== '') {
       const existingUser = await User.findOne({ email: email.trim().toLowerCase(), _id: { $ne: decoded.userId } });

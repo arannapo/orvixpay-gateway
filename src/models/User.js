@@ -29,6 +29,7 @@ const UserSchema = new mongoose.Schema({
   resetPasswordExpires: { type: Date },
   isEmailVerified: { type: Boolean, default: false },
   isBlocked: { type: Boolean, default: false },
+  invoiceDesign: { type: mongoose.Schema.Types.Mixed, default: {} },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

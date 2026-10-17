@@ -99,6 +99,7 @@ export const translations = {
 
     // Dashboard General
     dashInvoices: "Invoices",
+    dashMassPayout: "Mass Payout",
     dashSettings: "Settings",
     dashLogout: "Logout",
     dashRevenue: "Revenue",
@@ -272,6 +273,7 @@ export const translations = {
 
     // Dashboard General
     dashInvoices: "Facturas",
+    dashMassPayout: "Pagos Masivos",
     dashSettings: "Configuración",
     dashLogout: "Cerrar Sesión",
     dashRevenue: "Ingresos",

@@ -11,7 +11,7 @@ export async function POST(req) {
   try {
     await dbConnect();
     const body = await req.json();
-    const { amount, currency, coin, orderId, customerName, customerEmail, description, webhook, successUrl, cancelUrl, metadata } = body;
+    const { amount, currency, coin, orderId, customerName, customerEmail, description, webhook, successUrl, cancelUrl, metadata, design } = body;
 
     // Validate request
     if (!amount || !currency || !orderId || !coin || !customerEmail) {
@@ -110,6 +110,11 @@ export async function POST(req) {
     // Expires in 30 minutes
     const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
 
+    // Determine custom design configuration (or fallback to merchant's default)
+    const appliedDesign = (design && typeof design === 'object' && Object.keys(design).length > 0)
+      ? design
+      : ((metadata && metadata.design) || merchant.invoiceDesign || {});
+
     const invoice = await Invoice.create({
       merchantId,
       orderId,
@@ -127,7 +132,11 @@ export async function POST(req) {
       successUrl,
       cancelUrl,
       expiresAt,
-      metadata: (metadata && typeof metadata === 'object') ? metadata : {}
+      metadata: {
+        ...(metadata && typeof metadata === 'object' ? metadata : {}),
+        ...(appliedDesign && Object.keys(appliedDesign).length > 0 ? { design: appliedDesign } : {})
+      },
+      design: appliedDesign
     });
 
     // Trigger webhook for initial Pending status

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { LogOut, LayoutDashboard, Receipt, Key, Settings, Menu, X, FileText } from 'lucide-react';
+import { LogOut, LayoutDashboard, Receipt, Key, Settings, Menu, X, FileText, Send } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -59,6 +59,7 @@ export default function DashboardLayout({ children }) {
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Invoices', path: '/dashboard/invoices', icon: Receipt },
+    { name: 'Mass Payout', path: '/dashboard/mass-payout', icon: Send },
     { name: 'API Docs', path: '/dashboard/docs', icon: FileText },
     { name: 'Settings', path: '/dashboard/settings', icon: Settings },
   ];
@@ -87,7 +88,7 @@ export default function DashboardLayout({ children }) {
           {navItems.map((item) => {
             const isActive = item.path === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(item.path);
             const Icon = item.icon;
-            const localizedName = item.name === 'Dashboard' ? t('navDashboard') : item.name === 'Invoices' ? t('dashInvoices') : item.name === 'API Docs' ? t('footerDocs') : item.name === 'Settings' ? t('dashSettings') : item.name;
+            const localizedName = item.name === 'Dashboard' ? t('navDashboard') : item.name === 'Invoices' ? t('dashInvoices') : item.name === 'Mass Payout' ? (t('dashMassPayout') || (language === 'es' ? 'Pagos Masivos' : 'Mass Payout')) : item.name === 'API Docs' ? t('footerDocs') : item.name === 'Settings' ? t('dashSettings') : item.name;
             return (
               <Link 
                 key={item.name} 
@@ -121,7 +122,7 @@ export default function DashboardLayout({ children }) {
                {(() => {
                  const activeItem = navItems.find(i => (i.path === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(i.path)));
                  if (!activeItem) return t('navDashboard');
-                 return activeItem.name === 'Dashboard' ? t('navDashboard') : activeItem.name === 'Invoices' ? t('dashInvoices') : activeItem.name === 'API Docs' ? t('footerDocs') : activeItem.name === 'Settings' ? t('dashSettings') : activeItem.name;
+                 return activeItem.name === 'Dashboard' ? t('navDashboard') : activeItem.name === 'Invoices' ? t('dashInvoices') : activeItem.name === 'Mass Payout' ? (t('dashMassPayout') || (language === 'es' ? 'Pagos Masivos' : 'Mass Payout')) : activeItem.name === 'API Docs' ? t('footerDocs') : activeItem.name === 'Settings' ? t('dashSettings') : activeItem.name;
                })()}
             </h1>
           </div>
